@@ -1,20 +1,14 @@
-// deploy.js
+// run.js
 const main = async () => {
-  // コントラクトがコンパイルします
-  // コントラクトを扱うために必要なファイルが `artifacts` ディレクトリの直下に生成されます。
   const RecoveryStoryContractFactory = await hre.ethers.getContractFactory("RecoveryStory");
-  // Hardhat がローカルの Ethereum ネットワークを作成します。
   const RecoveryStoryContract = await RecoveryStoryContractFactory.deploy();
-  // コントラクトが Mint され、ローカルのブロックチェーンにデプロイされるまで待ちます。
   await RecoveryStoryContract.deployed();
   console.log("Contract deployed to:", RecoveryStoryContract.address);
   // makeAnEpicNFT 関数を呼び出す。NFT が Mint される。
   let txn = await RecoveryStoryContract.mintNFT();
-  // Minting が仮想マイナーにより、承認されるのを待ちます。
+  // Minting が仮想マイナーにより、承認されるのを待つ。
   await txn.wait();
-  console.log("Minted NFT #1");
 };
-// エラー処理を行っています。
 const runMain = async () => {
   try {
     await main();
