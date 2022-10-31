@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HeaderNav() {
   return (
     <nav class="flex items-center justify-between flex-wrap bg-orange-300 p-6">
