@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function HeaderNav() {
+export default function Card() {
   return (
     <Link
       href="/story/single"

@@ -27,7 +27,7 @@ contract RecoveryStory is ERC721URIStorage {
   // SVGコードを作成。
   // 変更されるのは、表示される単語だけ。
   // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: #02B2B4; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='#E9E4DF' /><text x='50%' y='50%' class='base' dominant-baseline='middle' text-anchor='middle'>";
+  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: #02B2B4; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='#E9E4DF' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
 
   // NFT トークンの名前とそのシンボルを渡します。
   constructor() ERC721 ("RecoveryStoryNFT", "RSN") {
