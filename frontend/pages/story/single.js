@@ -35,6 +35,10 @@ export default function Archive() {
           </svg>
         </span>
         <div>宮沢賢治</div>
+        <div className="flex flex-col">
+          <button>ストーリーにいいねする</button>
+          <button>ストーリーを購入する</button>
+        </div>
       </div>
     </div>
   );
