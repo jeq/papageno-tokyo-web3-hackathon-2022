@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Markdown from "../../components/Markdown";
+import { ethers } from "ethers";
 
 export default function Archive() {
   return (
