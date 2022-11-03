@@ -18,14 +18,12 @@ const Editor = (props) => {
     EditorState.createEmpty()
   );
 
-  const [body, setBody] = useState(""); //本文
+  const [body, setBody] = useState("");
+  props.setValueBody(body);
 
   const handleBold = () => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
   };
-
-  //親コンポーネントに返す値
-  props.setValueBody(body);
 
   return (
     <div className="m-4">
@@ -37,7 +35,7 @@ const Editor = (props) => {
       <div className="shadow-sm border border-gray-300 rounded-md sm:text-sm overflow-scroll h-[500px] p-3 prose prose-stone mx-auto">
         <DraftEditor
           editorState={editorState}
-          onChange={setEditorState}
+          onChange={(setEditorState, setBody)}
           placeholder="Tell a story..."
           blockStyleFn={myBlockStyleFn}
           value={body}

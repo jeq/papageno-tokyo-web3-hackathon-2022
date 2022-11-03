@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lexical/react": "^0.6.0",
+    "dante3": "^1.1.6",
     "draft-js": "^0.11.7",
     "ethers": "^5.7.2",
     "flowbite": "^1.5.3",
     "flowbite-react": "^0.3.2",
+    "lexical": "^0.6.0",
     "next": "^13.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

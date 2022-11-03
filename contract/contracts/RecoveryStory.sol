@@ -80,4 +80,8 @@ contract RecoveryStory {
             story[_storyId].icatchSvg, story[_storyId].createDate, story[_storyId].updateDate,
             story[_storyId].numLike, story[_storyId].itemId, story[_storyId].authorAddress);
     }
+
+    function getAllStories() external view returns (Story[] memory) {
+        return story;
+    }
 }

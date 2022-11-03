@@ -12,7 +12,7 @@ export default function Home() {
   // すべてのstoriesを保存する状態変数
   const [allStories, setAllStories] = useState([]);
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x7949D579463D19b9ff3cf51fEb66a51e1fa610DA";
+  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -31,14 +31,18 @@ export default function Home() {
             signer
           );
           /* コントラクトからgetNftメソッドを呼び出す */
-          const stories = await storyContract.getNft();
+          const stories = await storyContract.getAllStories();
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
               storyTitle: story.storyTitle,
               tags: story.tags,
-              numLike: numLike,
               storyBody: story.storyBody,
+              icatchSvg: story.icatchSvg,
+              createDate: new Date(story.createDate * 1000),
+              updateDate: new Date(story.updateDate * 1000),
+              numLike: story.numLike,
+              itemId: story.itemId,
               authorAdress: story.authorAdress,
             };
           });
@@ -159,24 +163,20 @@ export default function Home() {
         </section>
       </section>
       <section className="my-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-5">
-        <Card
-          title={"タイトル1"}
-          tags={["統合失調症", "メンタルヘルス"]}
-          authorAddress={"x0111111"}
-          numLike={3}
-        ></Card>
-        <Card
-          title={"タイトル2"}
-          tags={["ケガ", "職場"]}
-          authorAddress={"x0111111"}
-          numLike={5}
-        ></Card>
-        <Card
-          title={"タイトル3"}
-          tags={["家族", "マンガ"]}
-          authorAddress={"x0111111"}
-          numLike={7}
-        ></Card>
+        {allStories
+          .slice(0)
+          .reverse()
+          .map((story, index) => {
+            return (
+              <Card
+                title={story.storyTitle}
+                tags={story.tags}
+                authorAddress={story.authorAddress}
+                numLike={3}
+                key={index}
+              ></Card>
+            );
+          })}
       </section>
     </section>
   );
