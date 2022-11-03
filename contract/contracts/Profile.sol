@@ -14,7 +14,7 @@ contract Profile {
 
     uint256 userId = 1;
 
-    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
+    mapping(address=>uint256) public addressTouserId; // アドレスとユーザーIDの紐付け
 
     function createUserProfile(string memory _name, string memory _avatar) external {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
@@ -36,4 +36,11 @@ contract Profile {
         uint256 _userId = addressTouserId[msg.sender] - 1;
         return (userProfile[_userId].name, userProfile[_userId].avatar, userProfile[_userId].walletAddress);
     }
+
+    function getAuthor(address _authorAddress) public view returns(string memory) {
+        require(addressTouserId[_authorAddress] > 0, "You have not yet registered a profile.");
+        uint256 _userId = addressTouserId[_authorAddress] - 1;
+        return (userProfile[_userId].name);
+    }
+
 }
