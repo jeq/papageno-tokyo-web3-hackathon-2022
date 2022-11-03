@@ -17,6 +17,46 @@ export default function Home() {
   // ABIの内容
   const contractABI = abi.abi;
 
+  const getAllStories = async () => {
+    if (typeof window !== "undefined") {
+      const { ethereum } = window;
+
+      try {
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const storyContract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+          /* コントラクトからgetNftメソッドを呼び出す */
+          const stories = await storyContract.getNft();
+          /* UI側に必要な情報を取得 */
+          const storiesCleaned = stories.map((story) => {
+            return {
+              storyTitle: story.storyTitle,
+              tags: story.tags,
+              numLike: numLike,
+              storyBody: story.storyBody,
+              authorAdress: story.authorAdress,
+            };
+          });
+
+          /* React Stateにデータを格納する */
+          setAllStories(storiesCleaned);
+        } else {
+          console.log("ETHオブジェクトがありません");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  getAllStories();
+
+  //Cardに必要な情報をuseStateで渡す
+
   return (
     <section className="container mx-auto">
       <section id="icatch" className="">
@@ -119,12 +159,24 @@ export default function Home() {
         </section>
       </section>
       <section className="my-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-5">
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
+        <Card
+          title={"タイトル1"}
+          tags={["統合失調症", "メンタルヘルス"]}
+          authorAddress={"x0111111"}
+          numLike={3}
+        ></Card>
+        <Card
+          title={"タイトル2"}
+          tags={["統合失調症", "メンタルヘルス"]}
+          authorAddress={"x0111111"}
+          numLike={5}
+        ></Card>
+        <Card
+          title={"タイトル3"}
+          tags={["統合失調症", "メンタルヘルス"]}
+          authorAddress={"x0111111"}
+          numLike={7}
+        ></Card>
       </section>
     </section>
   );
