@@ -2,8 +2,6 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
-import CheckWallet from "../../components/CheckWallet";
-import DanteEditor from "dante3";
 
 export default function Create() {
   //状態変数たち
