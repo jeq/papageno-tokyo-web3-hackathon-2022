@@ -167,13 +167,13 @@ export default function Home() {
         ></Card>
         <Card
           title={"タイトル2"}
-          tags={["統合失調症", "メンタルヘルス"]}
+          tags={["ケガ", "職場"]}
           authorAddress={"x0111111"}
           numLike={5}
         ></Card>
         <Card
           title={"タイトル3"}
-          tags={["統合失調症", "メンタルヘルス"]}
+          tags={["家族", "マンガ"]}
           authorAddress={"x0111111"}
           numLike={7}
         ></Card>

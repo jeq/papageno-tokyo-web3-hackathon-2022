@@ -13,14 +13,19 @@ function myBlockStyleFn(contentBlock) {
   return "";
 }
 
-const Editor = () => {
+const Editor = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
 
+  const [body, setBody] = useState(""); //本文
+
   const handleBold = () => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
   };
+
+  //親コンポーネントに返す値
+  props.setValueBody(body);
 
   return (
     <div className="m-4">
@@ -35,6 +40,7 @@ const Editor = () => {
           onChange={setEditorState}
           placeholder="Tell a story..."
           blockStyleFn={myBlockStyleFn}
+          value={body}
         />
       </div>
     </div>
