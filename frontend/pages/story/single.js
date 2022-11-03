@@ -18,7 +18,7 @@ export default function Archive() {
         </div>
         <Markdown></Markdown>
       </div>
-      <div className="lg:w-5/12 pl-6">
+      <div className="lg:w-5/12 fixed right-0 px-6">
         <Profile></Profile>
         <div className="flex flex-col">
           <button>ストーリーにいいねする</button>
