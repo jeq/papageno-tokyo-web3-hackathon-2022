@@ -2,9 +2,21 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Card from "../components/story/Card";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import abi from "../src/utils/RecoveryStory.json";
 
 export default function Home() {
+  // パブリックウォレットを保存するための状態変数
+  const [currentAccount, setCurrentAccount] = useState("");
+  // すべてのstoriesを保存する状態変数
+  const [allStories, setAllStories] = useState([]);
+  // デプロイされたコントラクトアドレスを保持
+  const contractAddress = "0x7949D579463D19b9ff3cf51fEb66a51e1fa610DA";
+  // コントラクトからすべてのstoriesを取得するメソッド
+  // ABIの内容
+  const contractABI = abi.abi;
+
   return (
     <section className="container mx-auto">
       <section id="icatch" className="">
