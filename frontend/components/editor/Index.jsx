@@ -1,44 +1,50 @@
-import { Editor as DraftEditor, EditorState, RichUtils } from "draft-js";
-import "draft-js/dist/Draft.css";
-import React, { useState } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { css } from "@emotion/react";
+import React, { useState, useEffect } from "react";
 
-function myBlockStyleFn(contentBlock) {
-  const type = contentBlock.getType();
-
-  switch (type) {
-    case "blockquote":
-      return "px-4 py-2 border-l-4 bg-neutral-100 text-neutral-600 border-neutral-300 quote not-italic";
-  }
-
-  return "";
-}
-
-const Editor = () => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-
-  const handleBold = () => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-  };
-
+export default function Article(props) {
+  const [onEditorStateChange, setOnEditorStateChange] = useState("");
+  const [content, setContent] = useState("");
+  console.log(setContent);
   return (
-    <div className="m-4">
-      <div className="mb-1 pr-4 flex items-center mx-auto prose prose-stone">
-        <div className="ml-auto flex items-center space-x-5">
-          <button onClick={handleBold}>B</button>
-        </div>
-      </div>
-      <div className="shadow-sm border border-gray-300 rounded-md sm:text-sm overflow-scroll h-[500px] p-3 prose prose-stone mx-auto">
-        <DraftEditor
-          editorState={editorState}
-          onChange={setEditorState}
-          placeholder="Tell a story..."
-          blockStyleFn={myBlockStyleFn}
-        />
-      </div>
+    <div
+      onClick={focus}
+      css={css`
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        cursor: text;
+        padding: 16px;
+        border-radius: 2px;
+        margin-bottom: 2em;
+        box-shadow: inset 0px 1px 8px -3px #ababab;
+        background: #fefefe;
+      `}
+    >
+      <Editor
+        toolbar={{
+          options: ["inline", "blockType", "list", "textAlign", "link"],
+          inline: {
+            options: ["bold", "strikethrough"],
+          },
+          blockType: {
+            options: ["H2"],
+          },
+          list: {
+            options: ["unordered"],
+          },
+          textAlign: {
+            options: ["center"],
+          },
+          link: {
+            options: ["link"],
+          },
+        }}
+        onEditorStateChange={(newState) => {
+          setOnEditorStateChange(newState);
+          setContent(draftToHtml(convertToRaw(newState.getCurrentContent())));
+        }}
+      />
     </div>
   );
-};
-
-export default Editor;
+}

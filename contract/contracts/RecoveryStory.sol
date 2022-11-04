@@ -166,6 +166,9 @@ contract RecoveryStory {
         require(checkDoubleLike == false, "You are liking this story on the nest.");
         story[_storyId].numLike ++;
         story[_storyId].likeUserAdress.push(msg.sender);
+
+    function getAllStories() external view returns (Story[] memory) {
+        return story;
     }
 }
 
