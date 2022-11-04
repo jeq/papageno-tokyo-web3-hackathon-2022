@@ -3,93 +3,174 @@
 
 pragma solidity ^0.8.9;
 
-// いくつかの OpenZeppelin のコントラクトをインポート。
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-// utils ライブラリをインポートして文字列の処理を行う。
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "hardhat/console.sol";
+contract RecoveryStory {
+    constructor() {
+        uint basePrice = 0.001 ether;
+    }
+    struct Story {
+        string storyTitle; //タイトル
+        string[] tags; //タグ
+        string storyBody; //本文
+        string icatchSvg; //icatchのSVGデータ?
+        uint createDate; //作成日時
+        uint updateDate; //更新日時
+        uint numLike; //likeの数
+        uint itemId;  //storyのID
+        address authorAddress;  //著者のアドレス
+        address[] likeUserAdress; // いいねしたアドレスの配列
+    }
 
-// Base64.solコントラクトからSVGとJSONをBase64に変換する関数をインポート。
-import { Base64 } from "./libraries/Base64.sol";
+    struct UserProfile {
+        string name; // username
+        string avatar; // user avator -> あらかじめ数枚Contract側で用意する？
+        string biography; // profile
+        address walletAddress;
+    }
 
-// インポートした OpenZeppelin のコントラクトを継承。
-// 継承したコントラクトのメソッドにアクセスできるようになる。
-contract RecoveryStory is ERC721URIStorage {
+    UserProfile[] public userProfile;
 
-  // OpenZeppelin が tokenIds を簡単に追跡するために提供するライブラリを呼び出しています
-  using Counters for Counters.Counter;
+    uint256 userId = 1;
 
-  // _tokenIdsを初期化（_tokenIds = 0）
-  Counters.Counter private _tokenIds;
+    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
 
-  // SVGコードを作成。
-  // 変更されるのは、表示される単語だけ。
-  // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: #02B2B4; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='#E9E4DF' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
+    Story[] public story;
 
-  // NFT トークンの名前とそのシンボルを渡します。
-  constructor() ERC721 ("RecoveryStoryNFT", "RSN") {
-    console.log("This is my Recovery Story contract.");
-  }
+    uint public storyIdCounter = 1;
 
-  // シードを生成する関数を作成します。
-  function random(string memory input) internal pure returns (uint256) {
-      return uint256(keccak256(abi.encodePacked(input)));
-  }
+    mapping(string=>address) titleToAddress; // 作品タイトルと所有者アドレスの紐づけ
+    mapping(string=>uint) titleToStoryId; // 作品タイトルと作品IDの紐づけ
 
-  // ユーザーが NFT を取得するために実行する関数です。
-  function mintNFT() public {
+    function createUserProfile(
+        string memory _name,
+        string memory _avatar,
+        string memory _biography
+    ) external {
+        require(addressTouserId[msg.sender] == 0, "An account already exists.");
+        UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
+        userProfile.push(_newUserProfile);
+        addressTouserId[msg.sender] = userId;
+        userId ++;
+    }
 
-    // 現在のtokenIdを取得します。tokenIdは0から始まります。
-    uint256 newItemId = _tokenIds.current();
+    function editUserProfile(string memory _name, string memory _avatar, string memory _biography) external {
+        require(addressTouserId[msg.sender] > 0, "You have not yet registered a profile.");
+        uint256 _userId = addressTouserId[msg.sender] - 1;
+        userProfile[_userId].name = _name;
+        userProfile[_userId].avatar = _avatar;
+        userProfile[_userId].biography = _biography;
+    }
 
-    string memory recoveryStoryTitle = unicode"私のリカバリーストーリー";
+    function getUserProfile() external view returns(
+        string memory,
+        string memory,
+        string memory,
+        address
+    ){
+        require(addressTouserId[msg.sender] > 0, "You have not yet registered a profile.");
+        uint256 _userId = addressTouserId[msg.sender] - 1;
+        return (userProfile[_userId].name,
+                userProfile[_userId].avatar,
+                userProfile[_userId].biography,
+                userProfile[_userId].walletAddress);
+    }
 
-    // 3つの単語を連結して、<text>タグと<svg>タグで閉じる。
-    string memory finalSvg = string(abi.encodePacked(baseSvg, recoveryStoryTitle, "</text></svg>"));
-	  // NFTに出力されるテキストをターミナルに出力。
-	  console.log("\n----- SVG data -----");
-    console.log(finalSvg);
-    console.log("--------------------\n");
+    function getAuthor(address _authorAddress) public view returns(string memory) {
+        require(addressTouserId[_authorAddress] > 0, "You have not yet registered a profile.");
+        uint256 _userId = addressTouserId[_authorAddress] - 1;
+        return (userProfile[_userId].name);
+    }
 
-    // JSONファイルを所定の位置に取得し、base64としてエンコードします。
-    string memory json = Base64.encode(
-        bytes(
-            string(
-                abi.encodePacked(
-                    '{"name": "',
-                    // NFTのタイトルを生成される言葉に設定。
-                    recoveryStoryTitle,
-                    '", "description": "My Recovery Story", "image": "data:image/svg+xml;base64,',
-                    //  data:image/svg+xml;base64 を追加し、SVG を base64 でエンコードした結果を追加。
-                    Base64.encode(bytes(finalSvg)),
-                    '"}'
-                )
-            )
-        )
-    );
+    function createStory(
+        string memory _storyTitle,
+        string[] memory tags,
+        string memory _storyBody,
+        string memory _icatchSvg
+    ) public {
+        require(titleToStoryId[_storyTitle] == 0, "An Story Data already exists.");
+        address[] memory _emptyLikeUserAdress;
+        Story memory _newStory = Story(
+            _storyTitle,
+            tags,
+            _storyBody,
+            _icatchSvg,
+            block.timestamp,
+            block.timestamp,
+            0,
+            storyIdCounter,
+            msg.sender,
+            _emptyLikeUserAdress
+            );
+        story.push(_newStory);
+        titleToAddress[_storyTitle] = msg.sender;
+        titleToStoryId[_storyTitle] = storyIdCounter;
+        storyIdCounter++;
+    }
 
-    // データの先頭に data:application/json;base64 を追加。
-    string memory finalTokenUri = string(
-        abi.encodePacked("data:application/json;base64,", json)
-    );
+    function editStory(
+        string memory _storyTitle,
+        string[] memory tags,
+        string memory _storyBody,
+        string memory _icatchSvg
+    ) external {
+        require(titleToStoryId[_storyTitle] > 0, "You have not yet registered a sotry data.");
+        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
+        story[_storyId].storyTitle = _storyTitle;
+        story[_storyId].tags = tags;
+        story[_storyId].storyBody = _storyBody;
+        story[_storyId].icatchSvg = _icatchSvg;
+        story[_storyId].updateDate = block.timestamp;
+    }
 
-	  console.log("\n----- Token URI ----");
-    console.log(finalTokenUri);
-    console.log("--------------------\n");
+    function getStory(string memory _storyTitle) external view returns (
+        string memory,
+        string[] memory,
+        string memory,
+        string memory,
+        string memory,
+        uint,
+        uint,
+        uint,
+        uint,
+        address,
+        address[] memory
+      ) {
+        require(titleToStoryId[_storyTitle] > 0, "No stories with the specified title are registered.");
+        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
+        string memory storyAuthor = getAuthor(story[_storyId].authorAddress);
+        return (
+            story[_storyId].storyTitle,
+            story[_storyId].tags,
+            story[_storyId].storyBody,
+            story[_storyId].icatchSvg,
+            storyAuthor,
+            story[_storyId].createDate,
+            story[_storyId].updateDate,
+            story[_storyId].numLike,
+            story[_storyId].itemId,
+            story[_storyId].authorAddress,
+            story[_storyId].likeUserAdress
+        );
+    }
 
-    // msg.sender を使って NFT を送信者に Mint。
-    _safeMint(msg.sender, newItemId);
+    function addLike(string memory _storyTitle) external {
+        require(titleToStoryId[_storyTitle] > 0, "No stories with the specified title are registered.");
+        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
+        require(story[_storyId].authorAddress != msg.sender, "Story authors cannot be liked.");
+        bool checkDoubleLike = false;
+        for (uint index=0; index < story[_storyId].likeUserAdress.length; index++) {
+            if (story[_storyId].likeUserAdress[index] == msg.sender) {
+                checkDoubleLike = true;
+            }
+        }
+        require(checkDoubleLike == false, "You are liking this story on the nest.");
+        story[_storyId].numLike ++;
+        story[_storyId].likeUserAdress.push(msg.sender);
 
-    // tokenURIを更新。
-    _setTokenURI(newItemId, finalTokenUri);
-
- 	  // NFTがいつ誰に作成されたかを確認。
-	  console.log("An NFT w/ ID %s has been minted to %s", newItemId, msg.sender);
-
-    // 次の NFT が Mint されるときのカウンターをインクリメントする。
-    _tokenIds.increment();
-  }
+    function getAllStories() external view returns (Story[] memory) {
+        return story;
+    }
 }
+
+// "cardene", "cardene avatar", "cardene profile"
+// "cardene",["A","B"],"cardene story","cardene svg"

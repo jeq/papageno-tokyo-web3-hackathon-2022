@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Markdown from "../../components/Markdown";
 import Profile from "../../components/Profile";
 import { ethers } from "ethers";
 
-export default function Archive() {
+export default function Single() {
+  const router = useRouter();
+
   return (
     <div className="container mx-auto flex">
       <div className="lg:w-7/12">
@@ -16,7 +19,13 @@ export default function Archive() {
             height="628"
           ></img>
         </div>
-        <Markdown></Markdown>
+        <Markdown
+          storyTitle={router.query.title}
+          storyBody={router.query.body}
+          storyTags={router.query.tags}
+          authorAddress={router.query.authorAddress}
+          numLike={router.query.numLike}
+        ></Markdown>
       </div>
       <div className="lg:w-5/12 fixed right-0 px-6">
         <Profile></Profile>
