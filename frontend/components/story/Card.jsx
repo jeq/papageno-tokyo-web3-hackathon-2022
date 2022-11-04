@@ -1,9 +1,18 @@
 import Link from "next/link";
 
 export default function Card(props) {
+  //ストーリー情報
+  const storyInfo = {
+    title: props.title,
+    body: props.body,
+    tags: props.tags,
+    numLike: props.numLike,
+    authorAddress: props.authorAddress,
+  };
   return (
     <Link
-      href="/story/single"
+      as={`/story/${props.storyId}/`}
+      href={{ pathname: `/story/[storyId]/`, query: storyInfo }}
       className="max-w-sm rounded overflow-hidden shadow-2xl bg-gray-100 hover:shadow-3xl"
     >
       <img

@@ -1,7 +1,8 @@
-export default function HeaderNav() {
+export default function Markdown(props) {
   return (
     <article className="prose lg:prose-xl">
-      <h1>好きで嫌いだったことから学んだ、自分らしさの見つけ方</h1>
+      <h1>{props.storyTitle}</h1>
+      <p>{props.numLike}</p>
       <p>
         これは、約10年間打ち込み、大好きだったバスケットボールで経験した大きな挫折から、色々なことを学び生き方が変わったリカバリーストーリーです。
       </p>

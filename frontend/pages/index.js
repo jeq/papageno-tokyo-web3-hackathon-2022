@@ -42,7 +42,7 @@ export default function Home() {
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike,
-              itemId: story.itemId,
+              storyId: story.itemId,
               authorAdress: story.authorAdress,
             };
           });
@@ -174,6 +174,7 @@ export default function Home() {
                 authorAddress={story.authorAddress}
                 numLike={3}
                 key={index}
+                storyId={story.storyId}
               ></Card>
             );
           })}
