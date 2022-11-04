@@ -170,6 +170,7 @@ export default function Home() {
             return (
               <Card
                 title={story.storyTitle}
+                body={story.storyBody}
                 tags={story.tags}
                 authorAddress={story.authorAddress}
                 numLike={3}
