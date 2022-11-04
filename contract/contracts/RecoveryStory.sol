@@ -6,7 +6,7 @@ pragma solidity ^0.8.9;
 
 contract RecoveryStory {
     constructor() {
-        uint basePrice = 0.001;
+        uint basePrice = 0.001 ether;
     }
     struct Story {
         string storyTitle; //タイトル
@@ -166,18 +166,6 @@ contract RecoveryStory {
         require(checkDoubleLike == false, "You are liking this story on the nest.");
         story[_storyId].numLike ++;
         story[_storyId].likeUserAdress.push(msg.sender);
-    }
-
-    function getLikeNum(string memory _storyTitle) public returns (string memory) {
-        require(titleToStoryId[_storyTitle] > 0, "No stories with the specified title are registered.");
-        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
-        return (story[_storyId].numLike);
-    }
-
-    function buyNft(string memory _storyTitle, uint _payNum) external {
-        uint price = getLikeNum(_storyTitle);
-        require(_payNum >= price, "There are not enough funds for the price.");
-        titleToAddress[_storyTitle] = msg.sender;
     }
 }
 
