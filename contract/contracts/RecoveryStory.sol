@@ -170,7 +170,7 @@ contract RecoveryStory is StoryNFT {
 
     function addLike(uint  _storyId) external {
         require(story[_storyId-1].storyId > 0, "No stories with the specified title are registered.");
-        require(story[_storyId]-1.authorAddress != msg.sender, "Story authors cannot be liked.");
+        require(story[_storyId-1].authorAddress != msg.sender, "Story authors cannot be liked.");
         bool checkDoubleLike = false;
         for (uint index=0; index < story[_storyId-1].likeUserAdress.length; index++) {
             if (story[_storyId-1].likeUserAdress[index] == msg.sender) {
