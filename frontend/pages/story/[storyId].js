@@ -5,6 +5,7 @@ import Profile from "../../components/Profile";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import Link from "next/link";
+import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function Single() {
   //遷移前からのデータ取得

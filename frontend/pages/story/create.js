@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
+import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function Create() {
   //状態変数たち
@@ -48,10 +49,9 @@ export default function Create() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    CheckIfWalletIsConnected();
-  }, []);
+  useEffect(() => {}, []);
 
+  checkIfWalletIsConnected();
   return (
     <div className="container mx-auto">
       <div className="sm:col-span-2">
