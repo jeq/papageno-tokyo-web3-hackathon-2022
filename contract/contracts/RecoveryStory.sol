@@ -41,11 +41,12 @@ contract RecoveryStory is StoryNFT {
 
     UserProfile[] public userProfile;
 
-    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
-
     Story[] public story;
 
     uint public storyIdCounter = 1;
+    uint public userIdCounter = 1;
+
+    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
 
     mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
 
@@ -57,6 +58,7 @@ contract RecoveryStory is StoryNFT {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
+        addressTouserId[msg.sedner] = userIdCounter;
     }
 
     function getAllAvatar() external view returns(string[] memory) {
@@ -167,17 +169,17 @@ contract RecoveryStory is StoryNFT {
     }
 
     function addLike(uint  _storyId) external {
-        require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
-        require(story[_storyId].authorAddress != msg.sender, "Story authors cannot be liked.");
+        require(story[_storyId-1].storyId > 0, "No stories with the specified title are registered.");
+        require(story[_storyId]-1.authorAddress != msg.sender, "Story authors cannot be liked.");
         bool checkDoubleLike = false;
-        for (uint index=0; index < story[_storyId].likeUserAdress.length; index++) {
-            if (story[_storyId].likeUserAdress[index] == msg.sender) {
+        for (uint index=0; index < story[_storyId-1].likeUserAdress.length; index++) {
+            if (story[_storyId-1].likeUserAdress[index] == msg.sender) {
                 checkDoubleLike = true;
             }
         }
         require(checkDoubleLike == false, "You are liking this story on the nest.");
-        story[_storyId].numLike ++;
-        story[_storyId].likeUserAdress.push(msg.sender);
+        story[_storyId-1].numLike ++;
+        story[_storyId-1].likeUserAdress.push(msg.sender);
     }
     function getAllStories() external view returns (Story[] memory) {
         return story;
