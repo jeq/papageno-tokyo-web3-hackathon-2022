@@ -80,7 +80,6 @@ export default function Single() {
           <button onClick={addLike}>ストーリーにいいねする</button>
           <Link
             href={{ pathname: `/story/purchase/confirm/`, query: storyInfo }}
-            onClick={purchaseStory}
           >
             ストーリーを購入する
           </Link>
