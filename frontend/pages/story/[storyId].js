@@ -4,6 +4,7 @@ import Markdown from "../../components/Markdown";
 import Profile from "../../components/Profile";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
+import Link from "next/link";
 
 export default function Single() {
   //遷移前からのデータ取得
@@ -12,6 +13,16 @@ export default function Single() {
   // コントラクト接続の設定
   const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
   const contractABI = abi.abi;
+
+  //ストーリー情報
+  const storyInfo = {
+    title: router.query.title,
+    body: router.query.body,
+    tags: router.query.tags,
+    numLike: router.query.numLike,
+    authorAddress: router.query.authorAddress,
+    storyId: router.query.storyId,
+  };
 
   const addLike = async () => {
     try {
@@ -31,9 +42,9 @@ export default function Single() {
             gasLimit: 800000,
           }
         );
-        console.log("ミントしています。。", storyTxn.hash);
+        console.log("記録しています。。", storyTxn.hash);
         await storyTxn.wait();
-        console.log("ミントが完了しました。", storyTxn.hash);
+        console.log("記録が完了しました。", storyTxn.hash);
         console.log("Signerは、", signer);
       } else {
         console.log("ETHオブジェクトがありません", ethereum);
@@ -56,18 +67,23 @@ export default function Single() {
           ></img>
         </div>
         <Markdown
-          storyTitle={router.query.title}
-          storyBody={router.query.body}
-          storyTags={router.query.tags}
-          authorAddress={router.query.authorAddress}
-          numLike={router.query.numLike}
+          storyTitle={storyInfo.title}
+          storyBody={storyInfo.body}
+          storyTags={storyInfo.tags}
+          authorAddress={storyInfo.authorAddress}
+          numLike={storyInfo.numLike}
         ></Markdown>
       </div>
       <div className="lg:w-5/12 fixed right-0 px-6">
         <Profile></Profile>
         <div className="flex flex-col">
           <button onClick={addLike}>ストーリーにいいねする</button>
-          <button>ストーリーを購入する</button>
+          <Link
+            href={{ pathname: `/story/purchase/confirm/`, query: storyInfo }}
+            onClick={purchaseStory}
+          >
+            ストーリーを購入する
+          </Link>
         </div>
       </div>
     </div>
