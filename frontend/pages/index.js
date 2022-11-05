@@ -39,7 +39,7 @@ export default function Home() {
               icatchSvg: story.icatchSvg,
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
-              numLike: story.numLike,
+              numLike: story.numLike.toNumber(),
               storyId: story.storyId,
               authorAdress: story.authorAdress,
             };
@@ -171,7 +171,7 @@ export default function Home() {
                 body={story.storyBody}
                 tags={story.tags}
                 authorAddress={story.authorAddress}
-                numLike={3}
+                numLike={story.numLike}
                 key={index}
                 storyId={story.storyId}
               ></Card>

@@ -37,15 +37,14 @@ export default function Single() {
           contractABI,
           signer
         );
-        const storyTxn = await storyPortalContract.addLike(
-          router.query.storyId,
-          {
-            gasLimit: 800000,
-          }
-        );
+        console.log("storyId is : " + storyInfo.storyId);
+        const storyTxn = await storyPortalContract.addLike(storyInfo.storyId, {
+          gasLimit: 8000000,
+        });
         console.log("記録しています。。", storyTxn.hash);
         await storyTxn.wait();
         console.log("記録が完了しました。", storyTxn.hash);
+        alert("いいねしました。ありがとうございます！");
         console.log("Signerは、", signer);
       } else {
         console.log("ETHオブジェクトがありません", ethereum);

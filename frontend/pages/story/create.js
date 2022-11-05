@@ -34,7 +34,7 @@ export default function Create() {
           valueTags.split(","),
           valueBody,
           {
-            gasLimit: 800000,
+            gasLimit: 8000000,
           }
         );
         console.log("ミントしています。。", storyTxn.hash);

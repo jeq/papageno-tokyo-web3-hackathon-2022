@@ -24,7 +24,7 @@ export default function Completed(props) {
         const storyTxn = await storyPortalContract.purchaseStory(
           storyInfo.storyId,
           {
-            gasLimit: 800000,
+            gasLimit: 8000000,
           }
         );
         console.log("記録しています。。", storyTxn.hash);
