@@ -2,10 +2,11 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
+import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
+import ConnectWallet from "../../components/wallet/ConnectWallet";
 
 export default function Create() {
   //状態変数たち
-  const [currentAccount, setCurrentAccount] = useState(""); //パブリックウォレット
   const [valueTitle, setValueTitle] = useState(""); //タイトル
   const [valueBody, setValueBody] = useState(""); //本文
   const [valueTags, setValueTags] = useState(""); //タグ
@@ -15,29 +16,6 @@ export default function Create() {
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
-
-  // window.ethereumへのアクセス確認
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("Metamaskを持っているか確認してください");
-        return;
-      } else {
-        console.log("Metamaskが接続されています。", ethereum);
-      }
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("認証されたアカウントがあります");
-        setCurrentAccount(account);
-      } else {
-        console.log("認証されたアカウントがありません");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const postStory = async () => {
     try {
@@ -72,8 +50,8 @@ export default function Create() {
     }
   };
   useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
+    CheckIfWalletIsConnected();
+  }, [<ConnectWallet />]);
 
   return (
     <div className="container mx-auto">
