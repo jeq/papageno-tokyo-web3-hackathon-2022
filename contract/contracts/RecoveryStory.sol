@@ -5,7 +5,7 @@ pragma solidity ^0.8.9;
 
 import "./StoryNFT.sol";
 
-contract RecoveryStory is StoryNFT{
+contract RecoveryStory is StoryNFT {
 
     // constructor () {
     //     uint basePrice = 0.001 ether;
