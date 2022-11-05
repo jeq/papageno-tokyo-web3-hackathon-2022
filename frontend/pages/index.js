@@ -62,13 +62,13 @@ export default function Home() {
 
   return (
     <section className="container mx-auto">
-      <section id="icatch" className="">
-        <h2 className="text-5xl font-bold mb-10">Story Box</h2>
-        <div className="mb-10">
+      <section id="icatch" className="mt-12 text-gray-700">
+        <h2 className="text-7xl font-bold mb-10">Story Box</h2>
+        <div className="mb-5 text-2xl">
           立ち直った経験を「リカバリーストーリー」と、そのストーリーをもとにしたノンフィクションアートの制作過程を見届ける「プロセスストーリー」を購入することができるNFTマーケットプレイスです。
         </div>
       </section>
-      <section id="sort" className="py-5">
+      <section id="sort" className="py-5 mb-5">
         <section id="sort_tag flex items-center">
           <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white mr-3 cursor-pointer mb-3">
             <div className="flex">

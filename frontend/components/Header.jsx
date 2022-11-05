@@ -7,7 +7,7 @@ export default function HeaderNav() {
         href="/"
         className="flex items-center flex-shrink-0 mr-6 text-gray-800"
       >
-        <span className="font-semibold text-xl tracking-tight">Story Box</span>
+        <span className="font-semibold text-3xl tracking-tight text-gray-700">Story Box</span>
       </Link>
       <div className="block lg:hidden">
         <button className="flex items-center px-3 py-2 border rounded text-gray-800 hover:text-gray-800 hover:border-gray-800">
@@ -41,8 +41,9 @@ export default function HeaderNav() {
             </svg>
           </Link>
           <Link
-            href="/story/create/"
-            className="inline-block text-sm px-4 py-2 leading-none border rounded text-gray-800 border-gray-800 hover:border-transparent hover:text-orange-500 hover:bg-gray-800 mt-4 lg:mt-0"
+            href="/story/createnew/"
+            className="
+            inline-block text-base text-white px-4 py-2 drop-shadow	leading-none border rounded border-slate-500 bg-slate-500 hover:bg-slate-600 mt-4 lg:mt-0"
           >
             ストーリーを書く
           </Link>

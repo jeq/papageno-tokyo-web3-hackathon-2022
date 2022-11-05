@@ -53,9 +53,10 @@ export default function Create() {
   }, []);
 
   return (
-    <div className="container mx-auto">
-      <div className="sm:col-span-2">
-        <label className="inline-block text-gray-800 text-sm sm:text-base mb-2">
+    <div className="container lg:w-5/12 mx-auto my-20 text-gray-700">
+      <p className="text-2xl font-bold text-center mb-10">あなたの立ち直った経験を書こう</p>
+      <div className="sm:col-span-2 mb-6">
+        <label className="inline-block text-sm sm:text-lg font-semibold	mb-2">
           タイトル
         </label>
         <input
@@ -64,24 +65,11 @@ export default function Create() {
           name="title"
           value={valueTitle}
           onChange={(e) => setValueTitle(e.target.value)}
-          className="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2"
+          className="w-full bg-gray-50 text-gray-800 border focus:ring ring-slate-300 rounded outline-none transition duration-100 px-3 py-2"
         />
       </div>
-      <div className="sm:col-span-2">
-        <label className="inline-block text-gray-800 text-sm sm:text-base mb-2">
-          タグ（カンマ区切り）
-        </label>
-        <input
-          type="text"
-          id="tags"
-          name="tags"
-          value={valueTags}
-          onChange={(e) => setValueTags(e.target.value)}
-          className="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2"
-        />
-      </div>
-      <div className="sm:col-span-2">
-        <label className="inline-block text-gray-800 text-sm sm:text-base mb-2">
+      <div className="sm:col-span-2 mb-6">
+        <label className="inline-block text-sm sm:text-lg font-semibold	mb-2">
           本文
         </label>
         <textarea
@@ -90,14 +78,40 @@ export default function Create() {
           name="body"
           value={valueBody}
           onChange={(e) => setValueBody(e.target.value)}
-          className="w-full h-64 bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 h-500"
+          className="w-full h-64 bg-gray-50 text-gray-800 border focus:ring ring-slate-300 rounded outline-none transition duration-100 px-3 py-2 h-500"
         />
       </div>
+      <div className="sm:col-span-2 mb-12">
+        <label className="inline-block text-sm sm:text-lg font-semibold	mb-2">
+          タグ（カンマ区切り）
+        </label>
+        <input
+          type="text"
+          id="tags"
+          name="tags"
+          value={valueTags}
+          onChange={(e) => setValueTags(e.target.value)}
+          className="w-full bg-gray-50 text-gray-800 border focus:ring ring-slate-300 rounded outline-none transition duration-100 px-3 py-2"
+        />
+      </div>
+      
+      <button
+        // onClick={postStory}
+        className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
+      >
+        ストーリーを保存する
+      </button>
       <button
         onClick={postStory}
-        className="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
+        className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
       >
-        投稿する
+        ストーリーを出品する
+      </button>
+      <button
+        // onClick={postStory}
+        className="block mx-auto mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+      >
+        削除する
       </button>
     </div>
   );
