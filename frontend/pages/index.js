@@ -40,7 +40,7 @@ export default function Home() {
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike,
-              storyId: story.itemId,
+              storyId: story.storyId,
               authorAdress: story.authorAdress,
             };
           });
