@@ -56,7 +56,7 @@ export default function Single() {
   };
 
   return (
-    <div className="container mx-auto flex">
+    <div className="container mx-auto flex px-10 text-gray-700">
       <div className="lg:w-7/12">
         <div className="max-w-full pb-8">
           <img
@@ -75,14 +75,30 @@ export default function Single() {
           numLike={storyInfo.numLike}
         ></Markdown>
       </div>
-      <div className="lg:w-5/12 fixed right-0 px-6">
-      <div className="font-bold">このストーリーを書いた人</div>
+      <div className="lg:w-5/12 px-10 sticky right-0">
+        <div className="font-bold">このストーリーを書いた人</div>
         <Profile></Profile>
+        <Link
+          href="#"
+          className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+          >
+          プロフィールを見る
+        </Link>
         <div className="flex flex-col">
-          <button onClick={addLike}>ストーリーにいいねする</button>
+          <button
+            onClick={addLike}
+            className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
+          >
+            <svg class="inline-block w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            ストーリーにいいねする
+          </button>
           <Link
             href={{ pathname: `/story/purchase/confirm/`, query: storyInfo }}
+            className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
+            type="button"
+            data-modal-toggle="defaultModal"
           >
+            <svg class="inline-block w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             ストーリーを購入する
           </Link>
         </div>

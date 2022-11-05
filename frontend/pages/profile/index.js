@@ -5,6 +5,23 @@ import List from "../../components/story/List";
 import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function ShowProfile() {
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Metamaskをインストールしてください。");
+        return;
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log("接続しました。", accounts[0]);
+      setCurrentAccount(accounts[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   checkIfWalletIsConnected();
   return (
     <>
@@ -35,7 +52,6 @@ export default function ShowProfile() {
             </div>
           </div>
           <div className="lg:w-8/12 px-6">
-
             <div className="flex items-center mx-4">
               <div className="
                 border-b-2 px-10 py-1 text-slate-500 border-slate-500 cursor-pointer hover:text-slate-500 hover:border-slate-500 hover:font-semibold
@@ -59,8 +75,6 @@ export default function ShowProfile() {
                 <List></List>
               </div>
             </div>
-
-
           </div>
         </div>
       </main>
