@@ -12,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0xf348308B4b58ddb83d934D7d8f86350C51476b16";
+  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
