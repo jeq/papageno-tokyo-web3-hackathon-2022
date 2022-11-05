@@ -10,7 +10,7 @@ export default function Home() {
   // すべてのstoriesを保存する状態変数
   const [allStories, setAllStories] = useState([]);
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
+  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -30,7 +30,6 @@ export default function Home() {
           );
           /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
-          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
@@ -62,13 +61,13 @@ export default function Home() {
 
   return (
     <section className="container mx-auto">
-      <section id="icatch" className="">
-        <h2 className="text-5xl font-bold mb-10">Story Box</h2>
-        <div className="mb-10">
+      <section id="icatch" className="mt-12 text-gray-700">
+        <h2 className="text-7xl font-bold mb-10">Story Box</h2>
+        <div className="mb-5 text-2xl">
           立ち直った経験を「リカバリーストーリー」と、そのストーリーをもとにしたノンフィクションアートの制作過程を見届ける「プロセスストーリー」を購入することができるNFTマーケットプレイスです。
         </div>
       </section>
-      <section id="sort" className="py-5">
+      <section id="sort" className="py-5 mb-5">
         <section id="sort_tag flex items-center">
           <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white mr-3 cursor-pointer mb-3">
             <div className="flex">
