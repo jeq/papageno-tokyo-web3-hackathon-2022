@@ -33,7 +33,6 @@ export default function Create() {
           valueTitle,
           valueTags.split(),
           valueBody,
-          "svgs",
           {
             gasLimit: 800000,
           }
