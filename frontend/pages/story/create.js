@@ -12,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x885cf5B5eEFB5922Ed95D017B6Cc7d96aC0df00d";
+  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -33,7 +33,6 @@ export default function Create() {
           valueTitle,
           valueTags.split(),
           valueBody,
-          "svgs",
           {
             gasLimit: 800000,
           }
@@ -54,7 +53,9 @@ export default function Create() {
   checkIfWalletIsConnected();
   return (
     <div className="container lg:w-5/12 mx-auto my-20 text-gray-700">
-      <p className="text-2xl font-bold text-center mb-10">あなたの立ち直った経験を書こう</p>
+      <p className="text-2xl font-bold text-center mb-10">
+        あなたの立ち直った経験を書こう
+      </p>
       <div className="sm:col-span-2 mb-6">
         <label className="inline-block text-sm sm:text-lg font-semibold	mb-2">
           タイトル
@@ -94,7 +95,7 @@ export default function Create() {
           className="w-full bg-gray-50 text-gray-800 border focus:ring ring-slate-300 rounded outline-none transition duration-100 px-3 py-2"
         />
       </div>
-      
+
       <button
         // onClick={postStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
