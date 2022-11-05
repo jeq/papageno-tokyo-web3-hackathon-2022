@@ -7,8 +7,10 @@ import "./StoryNFT.sol";
 
 contract RecoveryStory is StoryNFT {
 
+    string[] public avatars;
+
     constructor () {
-        string avatars = [
+        avatars = [
             "QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx",
             "QmajCEJgDtGqPAgSALbN74zqJcCN7TrpAxgutBs4FwZnoZ",
             "QmX5dTmMNYSJ37ZjmgTL2wycnuqPeH1CWSbr3vFL87M47C",
@@ -43,8 +45,6 @@ contract RecoveryStory is StoryNFT {
 
     Story[] public story;
 
-
-
     uint public storyIdCounter = 1;
 
     mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
@@ -59,7 +59,7 @@ contract RecoveryStory is StoryNFT {
         userProfile.push(_newUserProfile);
     }
 
-    function getAllAvatar() external pure returns(string[] memory) {
+    function getAllAvatar() external view returns(string[] memory) {
         return avatars;
     }
 
