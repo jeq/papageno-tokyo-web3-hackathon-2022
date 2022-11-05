@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
-import ConnectWallet from "../../components/wallet/ConnectWallet";
 
 export default function Create() {
   //状態変数たち
@@ -51,7 +50,7 @@ export default function Create() {
   };
   useEffect(() => {
     CheckIfWalletIsConnected();
-  }, [<ConnectWallet />]);
+  }, []);
 
   return (
     <div className="container lg:w-5/12 mx-auto my-20 text-gray-700">

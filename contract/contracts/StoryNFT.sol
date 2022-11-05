@@ -7,6 +7,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
+
 // utils ライブラリをインポートして文字列の処理を行う。
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
@@ -16,7 +17,7 @@ import { Base64 } from "./libraries/Base64.sol";
 
 // インポートした OpenZeppelin のコントラクトを継承。
 // 継承したコントラクトのメソッドにアクセスできるようになる。
-contract Story is ERC721URIStorage {
+contract StoryNFT is ERC721URIStorage {
 
   // OpenZeppelin が tokenIds を簡単に追跡するために提供するライブラリを呼び出しています
   using Counters for Counters.Counter;
@@ -40,12 +41,12 @@ contract Story is ERC721URIStorage {
   }
 
   // ユーザーが NFT を取得するために実行する関数です。
-  function mintNFT() public {
+  function mintNFT(string memory _title) public returns(string memory, uint) {
 
     // 現在のtokenIdを取得します。tokenIdは0から始まります。
     uint256 newItemId = _tokenIds.current();
 
-    string memory recoveryStoryTitle = unicode"私のリカバリーストーリー";
+    string memory recoveryStoryTitle = _title;
 
     // 3つの単語を連結して、<text>タグと<svg>タグで閉じる。
     string memory finalSvg = string(abi.encodePacked(baseSvg, recoveryStoryTitle, "</text></svg>"));
@@ -62,7 +63,9 @@ contract Story is ERC721URIStorage {
                     '{"name": "',
                     // NFTのタイトルを生成される言葉に設定。
                     recoveryStoryTitle,
-                    '", "description": "My Recovery Story", "image": "data:image/svg+xml;base64,',
+                    '", "description": "My Recovery Story", ',
+
+                    '"image": "data:image/svg+xml;base64,',
                     //  data:image/svg+xml;base64 を追加し、SVG を base64 でエンコードした結果を追加。
                     Base64.encode(bytes(finalSvg)),
                     '"}'
@@ -91,5 +94,18 @@ contract Story is ERC721URIStorage {
 
     // 次の NFT が Mint されるときのカウンターをインクリメントする。
     _tokenIds.increment();
+
+
+
+    return (finalTokenUri, newItemId);
+  }
+
+  function burn(uint _tokenId) external {
+    require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
+
+    address burnAddress = 0x000000000000000000000000000000000000dEaD;
+    // burn
+    _transfer(msg.sender, burnAddress, _tokenId);
+
   }
 }
