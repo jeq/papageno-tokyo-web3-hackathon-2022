@@ -30,7 +30,6 @@ export default function Home() {
           );
           /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
-          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
