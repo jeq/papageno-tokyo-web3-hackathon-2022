@@ -8,6 +8,7 @@ export default function Card(props) {
     tags: props.tags,
     numLike: props.numLike,
     authorAddress: props.authorAddress,
+    storyId: props.storyId,
   };
   return (
     <Link
