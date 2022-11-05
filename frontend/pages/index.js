@@ -10,7 +10,7 @@ export default function Home() {
   // すべてのstoriesを保存する状態変数
   const [allStories, setAllStories] = useState([]);
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
+  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
