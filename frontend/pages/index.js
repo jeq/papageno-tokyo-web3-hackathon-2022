@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import Card from "../components/story/Card";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
@@ -30,8 +28,9 @@ export default function Home() {
             contractABI,
             signer
           );
-          /* コントラクトからgetNftメソッドを呼び出す */
+          /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
+          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
@@ -173,7 +172,7 @@ export default function Home() {
                 body={story.storyBody}
                 tags={story.tags}
                 authorAddress={story.authorAddress}
-                numLike={story.numLike}
+                numLike={3}
                 key={index}
                 storyId={story.storyId}
               ></Card>
