@@ -2,7 +2,7 @@
 const main = async () => {
   // コントラクトがコンパイルします
   // コントラクトを扱うために必要なファイルが `artifacts` ディレクトリの直下に生成されます。
-  const RecoveryStoryContractFactory = await hre.ethers.getContractFactory("Story");
+  const RecoveryStoryContractFactory = await hre.ethers.getContractFactory("StoryNFT");
   // Hardhat がローカルの Ethereum ネットワークを作成します。
   const RecoveryStoryContract = await RecoveryStoryContractFactory.deploy();
   // コントラクトが Mint され、ローカルのブロックチェーンにデプロイされるまで待ちます。

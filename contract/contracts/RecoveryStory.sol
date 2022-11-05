@@ -39,7 +39,7 @@ contract RecoveryStory is StoryNFT{
 
     uint public storyIdCounter = 1;
 
-    mapping(uint=>address) storyIdToAddress; // 作品タイトルと所有者アドレスの紐づけ
+    mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
 
     function createUserProfile(
         string memory _name,
@@ -166,7 +166,7 @@ contract RecoveryStory is StoryNFT{
         require(checkDoubleLike == false, "You are liking this story on the nest.");
         story[_storyId].numLike ++;
         story[_storyId].likeUserAdress.push(msg.sender);
-
+    }
     function getAllStories() external view returns (Story[] memory) {
         return story;
     }
