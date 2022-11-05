@@ -58,7 +58,7 @@ contract RecoveryStory is StoryNFT {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
-        addressTouserId[msg.sedner] = userIdCounter;
+        addressTouserId[msg.sender] = userIdCounter;
     }
 
     function getAllAvatar() external view returns(string[] memory) {

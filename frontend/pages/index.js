@@ -5,8 +5,6 @@ import { ethers } from "ethers";
 import abi from "../src/utils/RecoveryStory.json";
 
 export default function Home() {
-  // パブリックウォレットを保存するための状態変数
-  const [currentAccount, setCurrentAccount] = useState("");
   // すべてのstoriesを保存する状態変数
   const [allStories, setAllStories] = useState([]);
   // デプロイされたコントラクトアドレスを保持
