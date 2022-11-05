@@ -1,9 +1,19 @@
 import Link from "next/link";
 
-export default function Card() {
+export default function Card(props) {
+  //ストーリー情報
+  const storyInfo = {
+    title: props.title,
+    body: props.body,
+    tags: props.tags,
+    numLike: props.numLike,
+    authorAddress: props.authorAddress,
+    storyId: props.storyId,
+  };
   return (
     <Link
-      href="/story/single"
+      as={`/story/${props.storyId}/`}
+      href={{ pathname: `/story/[storyId]/`, query: storyInfo }}
       className="max-w-sm rounded overflow-hidden shadow-2xl bg-gray-100 hover:shadow-3xl"
     >
       <img
@@ -12,7 +22,9 @@ export default function Card() {
         alt="Mountain"
       />
       <div className="px-6 py-4">
-        <div className="text-gray-700 font-bold text-xl mb-3">タイトル</div>
+        <div className="text-gray-700 font-bold text-xl mb-3">
+          {props.title}
+        </div>
         <div className="mb-3 flex items-center">
           <span className="inline-block rounded-full text-sm text-yellow-500 hover:text-white hover:bg-yellow-500 font-semibold cursor-pointer transition delay-50 duration-300 ease-in-out">
             <svg
@@ -30,15 +42,20 @@ export default function Card() {
               />{" "}
             </svg>
           </span>
-          <span className="inline-block text-yellow-500 h-6 ml-1">3</span>
+          <span className="inline-block text-yellow-500 h-6 ml-1">
+            {props.numLike}
+          </span>
         </div>
         <div className="mb-3">
-          <span className="inline-block bg-gray-500 rounded-full px-3 py-1 text-sm font-semibold text-gray-100 mr-2 mb-2 cursor-pointer hover:bg-gray-600 transition delay-50 duration-300 ease-in-out">
-            #統合失調症
-          </span>
-          <span className="inline-block bg-gray-500 rounded-full px-3 py-1 text-sm font-semibold text-gray-100 mr-2 mb-2 cursor-pointer hover:bg-gray-600 transition delay-50 duration-300 ease-in-out">
-            #メンタルヘルス
-          </span>
+          {typeof props.tags === "object"
+            ? props.tags.map((tag) => {
+                return (
+                  <span className="inline-block bg-gray-500 rounded-full px-3 py-1 text-sm font-semibold text-gray-100 mr-2 mb-2 cursor-pointer hover:bg-gray-600 transition delay-50 duration-300 ease-in-out">
+                    {tag}
+                  </span>
+                );
+              })
+            : console.log("ofcourse null")}
           <p className="text-gray-700 text-base flex items-center">
             <span className="mr-1">
               <svg
@@ -56,7 +73,7 @@ export default function Card() {
                 />
               </svg>
             </span>
-            著者の名前
+            {props.authorAddress}
           </p>
         </div>
       </div>
