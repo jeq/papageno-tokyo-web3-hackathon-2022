@@ -75,6 +75,7 @@ export default function Single() {
         ></Markdown>
       </div>
       <div className="lg:w-5/12 fixed right-0 px-6">
+      <div className="font-bold">このストーリーを書いた人</div>
         <Profile></Profile>
         <div className="flex flex-col">
           <button onClick={addLike}>ストーリーにいいねする</button>
