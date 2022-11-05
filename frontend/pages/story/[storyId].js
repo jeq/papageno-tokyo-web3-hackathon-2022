@@ -5,13 +5,14 @@ import Profile from "../../components/Profile";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import Link from "next/link";
+import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function Single() {
   //遷移前からのデータ取得
   const router = useRouter();
 
   // コントラクト接続の設定
-  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
+  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
   const contractABI = abi.abi;
 
   //ストーリー情報

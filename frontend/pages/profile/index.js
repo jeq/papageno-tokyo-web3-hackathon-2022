@@ -2,24 +2,10 @@ import Head from "next/head";
 import Link from "next/link";
 import Profile from "../../components/Profile";
 import List from "../../components/story/List";
+import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function ShowProfile() {
-  const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        alert("Metamaskをインストールしてください。");
-        return;
-      }
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("接続しました。", accounts[0]);
-      setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  checkIfWalletIsConnected();
   return (
     <>
       <Head>
