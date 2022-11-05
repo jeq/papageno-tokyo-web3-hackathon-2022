@@ -2,9 +2,65 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Card from "../components/story/Card";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import abi from "../src/utils/RecoveryStory.json";
 
 export default function Home() {
+  // パブリックウォレットを保存するための状態変数
+  const [currentAccount, setCurrentAccount] = useState("");
+  // すべてのstoriesを保存する状態変数
+  const [allStories, setAllStories] = useState([]);
+  // デプロイされたコントラクトアドレスを保持
+  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
+  // コントラクトからすべてのstoriesを取得するメソッド
+  // ABIの内容
+  const contractABI = abi.abi;
+
+  const getAllStories = async () => {
+    if (typeof window !== "undefined") {
+      const { ethereum } = window;
+
+      try {
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const storyContract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+          /* コントラクトからgetNftメソッドを呼び出す */
+          const stories = await storyContract.getAllStories();
+          /* UI側に必要な情報を取得 */
+          const storiesCleaned = stories.map((story) => {
+            return {
+              storyTitle: story.storyTitle,
+              tags: story.tags,
+              storyBody: story.storyBody,
+              icatchSvg: story.icatchSvg,
+              createDate: new Date(story.createDate * 1000),
+              updateDate: new Date(story.updateDate * 1000),
+              numLike: story.numLike,
+              storyId: story.storyId,
+              authorAdress: story.authorAdress,
+            };
+          });
+
+          /* React Stateにデータを格納する */
+          setAllStories(storiesCleaned);
+        } else {
+          console.log("ETHオブジェクトがありません");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  getAllStories();
+
+  //Cardに必要な情報をuseStateで渡す
+
   return (
     <section className="container mx-auto">
       <section id="icatch" className="">
@@ -107,12 +163,22 @@ export default function Home() {
         </section>
       </section>
       <section className="my-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-5">
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
+        {allStories
+          .slice(0)
+          .reverse()
+          .map((story, index) => {
+            return (
+              <Card
+                title={story.storyTitle}
+                body={story.storyBody}
+                tags={story.tags}
+                authorAddress={story.authorAddress}
+                numLike={3}
+                key={index}
+                storyId={story.storyId}
+              ></Card>
+            );
+          })}
       </section>
     </section>
   );

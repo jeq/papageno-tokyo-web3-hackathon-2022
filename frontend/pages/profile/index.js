@@ -4,6 +4,22 @@ import Profile from "../../components/Profile";
 import List from "../../components/story/List";
 
 export default function ShowProfile() {
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Metamaskをインストールしてください。");
+        return;
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log("接続しました。", accounts[0]);
+      setCurrentAccount(accounts[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Head>
@@ -24,7 +40,7 @@ export default function ShowProfile() {
               >
                 プロフィールを設定する
               </Link>
-              <button>設定・ウォレット</button>
+              <button onClick={connectWallet}>ウォレット接続</button>
             </div>
           </div>
           <div className="lg:w-8/12 pl-8">
