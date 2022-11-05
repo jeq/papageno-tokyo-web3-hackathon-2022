@@ -3,9 +3,11 @@
 
 pragma solidity ^0.8.9;
 
-import "./StoryNFT.sol";
+// import "./StoryNFT.sol";
 
-contract RecoveryStory is StoryNFT {
+// contract RecoveryStory is StoryNFT {
+    
+contract RecoveryStory {
 
     // constructor () {
     //     uint basePrice = 0.001 ether;
@@ -84,7 +86,6 @@ contract RecoveryStory is StoryNFT {
         string[] memory _tags,
         string memory _storyBody
     ) public {
-        // require(story[storyIdCounter].storyId == 0, "An Story Data already exists.");
         address[] memory _emptyLikeUserAdress;
         // string memory _dataURI;
         // uint _tokenIds;
@@ -149,10 +150,10 @@ contract RecoveryStory is StoryNFT {
     //     );
     // }
 
-    function deleteStory(uint _tokenId) external {
-        require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
-        _burn(_tokenId);
-    }
+    // function deleteStory(uint _tokenId) external {
+    //     require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
+    //     _burn(_tokenId);
+    // }
 
     function addLike(uint  _storyId) external {
         require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
