@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
+import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
 
 export default function Create() {
   //状態変数たち
@@ -11,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x8c0a14F07d296Adbbb4f2A44DdD9923FC6e58391";
+  const contractAddress = "0x885cf5B5eEFB5922Ed95D017B6Cc7d96aC0df00d";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -48,10 +49,9 @@ export default function Create() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    CheckIfWalletIsConnected();
-  }, []);
+  useEffect(() => {}, []);
 
+  checkIfWalletIsConnected();
   return (
     <div className="container lg:w-5/12 mx-auto my-20 text-gray-700">
       <p className="text-2xl font-bold text-center mb-10">あなたの立ち直った経験を書こう</p>
