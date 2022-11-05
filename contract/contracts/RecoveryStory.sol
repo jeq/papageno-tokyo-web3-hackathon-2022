@@ -7,9 +7,15 @@ import "./StoryNFT.sol";
 
 contract RecoveryStory is StoryNFT {
 
-    // constructor () {
-    //     uint basePrice = 0.001 ether;
-    // }
+    constructor () {
+        string avatars = [
+            "QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx",
+            "QmajCEJgDtGqPAgSALbN74zqJcCN7TrpAxgutBs4FwZnoZ",
+            "QmX5dTmMNYSJ37ZjmgTL2wycnuqPeH1CWSbr3vFL87M47C",
+            "QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A",
+            "QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
+        ];
+    }
 
     struct Story {
         string storyTitle; //タイトル
@@ -37,6 +43,8 @@ contract RecoveryStory is StoryNFT {
 
     Story[] public story;
 
+
+
     uint public storyIdCounter = 1;
 
     mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
@@ -49,6 +57,10 @@ contract RecoveryStory is StoryNFT {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
+    }
+
+    function getAllAvatar() external pure returns(string[] memory) {
+        return avatars;
     }
 
     function editUserProfile(string memory _name, string memory _avatar, string memory _biography) external {
