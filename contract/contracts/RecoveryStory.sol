@@ -41,11 +41,12 @@ contract RecoveryStory is StoryNFT {
 
     UserProfile[] public userProfile;
 
-    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
-
     Story[] public story;
 
     uint public storyIdCounter = 1;
+    uint public userIdCounter = 1;
+
+    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
 
     mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
 
@@ -57,6 +58,7 @@ contract RecoveryStory is StoryNFT {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
+        addressTouserId[msg.sedner] = userIdCounter;
     }
 
     function getAllAvatar() external view returns(string[] memory) {
