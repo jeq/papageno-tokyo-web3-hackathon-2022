@@ -3,20 +3,23 @@
 
 pragma solidity ^0.8.9;
 
+import "./StoryNFT.sol";
 
-contract RecoveryStory {
-    constructor() {
-        uint basePrice = 0.001 ether;
-    }
+contract RecoveryStory is StoryNFT {
+
+    // constructor () {
+    //     uint basePrice = 0.001 ether;
+    // }
+
     struct Story {
         string storyTitle; //タイトル
         string[] tags; //タグ
         string storyBody; //本文
-        string icatchSvg; //icatchのSVGデータ?
+        string dataURI; // NFTのdataURI
         uint createDate; //作成日時
         uint updateDate; //更新日時
         uint numLike; //likeの数
-        uint itemId;  //storyのID
+        uint storyId;  //storyのID
         address authorAddress;  //著者のアドレス
         address[] likeUserAdress; // いいねしたアドレスの配列
     }
@@ -30,16 +33,13 @@ contract RecoveryStory {
 
     UserProfile[] public userProfile;
 
-    uint256 userId = 1;
-
     mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
 
     Story[] public story;
 
     uint public storyIdCounter = 1;
 
-    mapping(string=>address) titleToAddress; // 作品タイトルと所有者アドレスの紐づけ
-    mapping(string=>uint) titleToStoryId; // 作品タイトルと作品IDの紐づけ
+    mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
 
     function createUserProfile(
         string memory _name,
@@ -49,8 +49,6 @@ contract RecoveryStory {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
-        addressTouserId[msg.sender] = userId;
-        userId ++;
     }
 
     function editUserProfile(string memory _name, string memory _avatar, string memory _biography) external {
@@ -83,17 +81,19 @@ contract RecoveryStory {
 
     function createStory(
         string memory _storyTitle,
-        string[] memory tags,
-        string memory _storyBody,
-        string memory _icatchSvg
+        string[] memory _tags,
+        string memory _storyBody
     ) public {
-        require(titleToStoryId[_storyTitle] == 0, "An Story Data already exists.");
+        // require(story[storyIdCounter].storyId == 0, "An Story Data already exists.");
         address[] memory _emptyLikeUserAdress;
+        // string memory _dataURI;
+        // uint _tokenIds;
+        // (_dataURI, _tokenIds) = mintNFT(_storyTitle);
         Story memory _newStory = Story(
             _storyTitle,
-            tags,
+            _tags,
             _storyBody,
-            _icatchSvg,
+            "img",
             block.timestamp,
             block.timestamp,
             0,
@@ -102,8 +102,7 @@ contract RecoveryStory {
             _emptyLikeUserAdress
             );
         story.push(_newStory);
-        titleToAddress[_storyTitle] = msg.sender;
-        titleToStoryId[_storyTitle] = storyIdCounter;
+        storyIdToAddress[storyIdCounter] = msg.sender;
         storyIdCounter++;
     }
 
@@ -111,51 +110,52 @@ contract RecoveryStory {
         string memory _storyTitle,
         string[] memory tags,
         string memory _storyBody,
-        string memory _icatchSvg
+        uint _storyId
     ) external {
-        require(titleToStoryId[_storyTitle] > 0, "You have not yet registered a sotry data.");
-        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
+        require(story[_storyId].storyId > 0, "You have not yet registered a sotry data.");
         story[_storyId].storyTitle = _storyTitle;
         story[_storyId].tags = tags;
         story[_storyId].storyBody = _storyBody;
-        story[_storyId].icatchSvg = _icatchSvg;
         story[_storyId].updateDate = block.timestamp;
     }
 
-    function getStory(string memory _storyTitle) external view returns (
-        string memory,
-        string[] memory,
-        string memory,
-        string memory,
-        string memory,
-        uint,
-        uint,
-        uint,
-        uint,
-        address,
-        address[] memory
-      ) {
-        require(titleToStoryId[_storyTitle] > 0, "No stories with the specified title are registered.");
-        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
-        string memory storyAuthor = getAuthor(story[_storyId].authorAddress);
-        return (
-            story[_storyId].storyTitle,
-            story[_storyId].tags,
-            story[_storyId].storyBody,
-            story[_storyId].icatchSvg,
-            storyAuthor,
-            story[_storyId].createDate,
-            story[_storyId].updateDate,
-            story[_storyId].numLike,
-            story[_storyId].itemId,
-            story[_storyId].authorAddress,
-            story[_storyId].likeUserAdress
-        );
+    // function getStory(uint  _storyId) external view returns (
+    //     string memory,
+    //     string[] memory,
+    //     string memory,
+    //     string memory,
+    //     string memory,
+    //     uint,
+    //     uint,
+    //     uint,
+    //     uint,
+    //     address,
+    //     address[] memory
+    //   ) {
+    //     require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
+    //     string memory storyAuthor = getAuthor(story[_storyId].authorAddress);
+    //     return (
+    //         story[_storyId].storyTitle,
+    //         story[_storyId].tags,
+    //         story[_storyId].storyBody,
+    //         story[_storyId].dataURI,
+    //         storyAuthor,
+    //         story[_storyId].createDate,
+    //         story[_storyId].updateDate,
+    //         story[_storyId].numLike,
+    //         story[_storyId].storyId,
+    //         story[_storyId].authorAddress,
+    //         story[_storyId].likeUserAdress
+    //     );
+    // }
+
+    function deleteStory(uint _tokenId) external {
+        require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
+        _burn(_tokenId);
     }
 
-    function addLike(string memory _storyTitle) external {
-        require(titleToStoryId[_storyTitle] > 0, "No stories with the specified title are registered.");
-        uint256 _storyId = titleToStoryId[_storyTitle] - 1;
+    function addLike(uint  _storyId) external {
+        require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
         require(story[_storyId].authorAddress != msg.sender, "Story authors cannot be liked.");
         bool checkDoubleLike = false;
         for (uint index=0; index < story[_storyId].likeUserAdress.length; index++) {
@@ -166,11 +166,13 @@ contract RecoveryStory {
         require(checkDoubleLike == false, "You are liking this story on the nest.");
         story[_storyId].numLike ++;
         story[_storyId].likeUserAdress.push(msg.sender);
-
+    }
     function getAllStories() external view returns (Story[] memory) {
         return story;
     }
+
+    // function buyNft(uint _tokenId) {};
 }
 
 // "cardene", "cardene avatar", "cardene profile"
-// "cardene",["A","B"],"cardene story","cardene svg"
+// "cardene",["A","B"],"cardene story"

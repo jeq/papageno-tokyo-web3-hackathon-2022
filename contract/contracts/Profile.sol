@@ -20,7 +20,7 @@ contract Profile {
     function createUserProfile(
         string memory _name,
         string memory _avatar,
-        string _biography
+        string memory _biography
     ) external {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
@@ -45,7 +45,11 @@ contract Profile {
     ){
         require(addressTouserId[msg.sender] > 0, "You have not yet registered a profile.");
         uint256 _userId = addressTouserId[msg.sender] - 1;
-        return (userProfile[_userId].name, userProfile[_userId].avatar, userProfile[_userId].walletAddress);
+        return (
+            userProfile[_userId].name,
+            userProfile[_userId].avatar,
+            userProfile[_userId].biography,
+            userProfile[_userId].walletAddress);
     }
 
     function getAuthor(address _authorAddress) public view returns(string memory) {
