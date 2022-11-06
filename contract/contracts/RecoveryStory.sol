@@ -7,18 +7,14 @@ import "./MintNft.sol";
 
 contract RecoveryStory is MintNft {
 
-    string[] public avatars;
-    uint basePrice = 0.001 ether;
-
-    constructor () {
-        avatars = [
+    string[] public avatars = [
             "QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx",
             "QmajCEJgDtGqPAgSALbN74zqJcCN7TrpAxgutBs4FwZnoZ",
             "QmX5dTmMNYSJ37ZjmgTL2wycnuqPeH1CWSbr3vFL87M47C",
             "QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A",
             "QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
         ];
-    }
+    uint basePrice = 0.001 ether;
 
     struct Story {
         string storyTitle; //タイトル
@@ -57,7 +53,7 @@ contract RecoveryStory is MintNft {
         string memory _biography,
         uint _avatar
     ) external {
-        require(addressTouserId[msg.sender] == 0, "An account already exists.");
+        require(addressTouserId[msg.sender] != 0, "An account already exists.");
 
         UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar-1], msg.sender);
         userProfile.push(_newUserProfile);
@@ -80,25 +76,25 @@ contract RecoveryStory is MintNft {
         userProfile[_userId].biography = _biography;
     }
 
-    function getUserProfile() external view returns(
+    function getUserProfile(address userAddress) external view returns(
         string memory,
         string memory,
         string memory,
         address
     ){
-        require(addressTouserId[msg.sender] > 0, "You have not yet registered a profile.");
-        uint256 _userId = addressTouserId[msg.sender] - 1;
+        require(addressTouserId[userAddress] > 0, "You have not yet registered a profile.");
+        uint256 _userId = addressTouserId[userAddress] - 1;
         return (userProfile[_userId].name,
                 userProfile[_userId].avatar,
                 userProfile[_userId].biography,
                 userProfile[_userId].walletAddress);
     }
 
-    function getAuthor(address _authorAddress) public view returns(string memory) {
-        require(addressTouserId[_authorAddress] > 0, "You have not yet registered a profile.");
-        uint256 _userId = addressTouserId[_authorAddress] - 1;
-        return (userProfile[_userId].name);
-    }
+    // function getAuthor(address _authorAddress) public view returns(string memory) {
+    //     require(addressTouserId[_authorAddress] > 0, "You have not yet registered a profile.");
+    //     uint256 _userId = addressTouserId[_authorAddress] - 1;
+    //     return (userProfile[_userId].name);
+    // }
 
     function createStory(
         string memory _storyTitle,
@@ -168,12 +164,10 @@ contract RecoveryStory is MintNft {
         payable(ownerAddress).transfer(msg.value);
     }
 
-    function burnNft(uint _storyId, uint _tokenId) public {
-        require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
-        // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
-        _burn(_tokenId);
-    }
+    // function burnNft(uint _storyId, uint _tokenId) public {
+    //     require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
+    //     // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
+    //     _burn(_tokenId);
+    // }
 }
 
-// "cardene", "cardene avatar", "cardene profile"
-// "cardene",["A","B"],"cardene story"
