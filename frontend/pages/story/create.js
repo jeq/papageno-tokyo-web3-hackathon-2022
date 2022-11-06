@@ -12,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
+  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -31,10 +31,10 @@ export default function Create() {
         );
         const storyTxn = await storyPortalContract.createStory(
           valueTitle,
-          valueTags.split(),
+          valueTags.split(","),
           valueBody,
           {
-            gasLimit: 800000,
+            gasLimit: 8000000,
           }
         );
         console.log("ミントしています。。", storyTxn.hash);

@@ -5,12 +5,10 @@ import { ethers } from "ethers";
 import abi from "../src/utils/RecoveryStory.json";
 
 export default function Home() {
-  // パブリックウォレットを保存するための状態変数
-  const [currentAccount, setCurrentAccount] = useState("");
   // すべてのstoriesを保存する状態変数
   const [allStories, setAllStories] = useState([]);
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x4230837D759D230f82A878eee57f5ee0A972AC41";
+  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -39,8 +37,8 @@ export default function Home() {
               icatchSvg: story.icatchSvg,
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
-              numLike: story.numLike,
-              storyId: story.itemId,
+              numLike: story.numLike.toNumber(),
+              storyId: story.storyId,
               authorAdress: story.authorAdress,
             };
           });
@@ -171,7 +169,7 @@ export default function Home() {
                 body={story.storyBody}
                 tags={story.tags}
                 authorAddress={story.authorAddress}
-                numLike={3}
+                numLike={story.numLike}
                 key={index}
                 storyId={story.storyId}
               ></Card>

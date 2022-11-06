@@ -7,9 +7,19 @@ import "./StoryNFT.sol";
 
 contract RecoveryStory is StoryNFT {
 
-    // constructor () {
-    //     uint basePrice = 0.001 ether;
-    // }
+    string[] public avatars;
+    uint basePrice;
+
+    constructor () {
+        avatars = [
+            "QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx",
+            "QmajCEJgDtGqPAgSALbN74zqJcCN7TrpAxgutBs4FwZnoZ",
+            "QmX5dTmMNYSJ37ZjmgTL2wycnuqPeH1CWSbr3vFL87M47C",
+            "QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A",
+            "QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
+        ];
+        basePrice = 0.001 ether;
+    }
 
     struct Story {
         string storyTitle; //タイトル
@@ -20,6 +30,7 @@ contract RecoveryStory is StoryNFT {
         uint updateDate; //更新日時
         uint numLike; //likeの数
         uint storyId;  //storyのID
+        uint tokenId; // NFTのtokenId
         address authorAddress;  //著者のアドレス
         address[] likeUserAdress; // いいねしたアドレスの配列
     }
@@ -33,11 +44,12 @@ contract RecoveryStory is StoryNFT {
 
     UserProfile[] public userProfile;
 
-    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
-
     Story[] public story;
 
     uint public storyIdCounter = 1;
+    uint public userIdCounter = 1;
+
+    mapping(address=>uint256) addressTouserId; // アドレスとユーザーIDの紐付け
 
     mapping(uint=>address) storyIdToAddress; // 作品IDと所有者アドレスの紐づけ
 
@@ -49,6 +61,11 @@ contract RecoveryStory is StoryNFT {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
         UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
         userProfile.push(_newUserProfile);
+        addressTouserId[msg.sender] = userIdCounter;
+    }
+
+    function getAllAvatar() external view returns(string[] memory) {
+        return avatars;
     }
 
     function editUserProfile(string memory _name, string memory _avatar, string memory _biography) external {
@@ -86,18 +103,19 @@ contract RecoveryStory is StoryNFT {
     ) public {
         // require(story[storyIdCounter].storyId == 0, "An Story Data already exists.");
         address[] memory _emptyLikeUserAdress;
-        // string memory _dataURI;
-        // uint _tokenIds;
-        // (_dataURI, _tokenIds) = mintNFT(_storyTitle);
+        string memory _dataURI;
+        uint _tokenIds;
+        (_dataURI, _tokenIds) = mintNFT(_storyTitle);
         Story memory _newStory = Story(
             _storyTitle,
             _tags,
             _storyBody,
-            "img",
+            _dataURI,
             block.timestamp,
             block.timestamp,
             0,
             storyIdCounter,
+            _tokenIds,
             msg.sender,
             _emptyLikeUserAdress
             );
@@ -119,59 +137,43 @@ contract RecoveryStory is StoryNFT {
         story[_storyId].updateDate = block.timestamp;
     }
 
-    // function getStory(uint  _storyId) external view returns (
-    //     string memory,
-    //     string[] memory,
-    //     string memory,
-    //     string memory,
-    //     string memory,
-    //     uint,
-    //     uint,
-    //     uint,
-    //     uint,
-    //     address,
-    //     address[] memory
-    //   ) {
-    //     require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
-    //     string memory storyAuthor = getAuthor(story[_storyId].authorAddress);
-    //     return (
-    //         story[_storyId].storyTitle,
-    //         story[_storyId].tags,
-    //         story[_storyId].storyBody,
-    //         story[_storyId].dataURI,
-    //         storyAuthor,
-    //         story[_storyId].createDate,
-    //         story[_storyId].updateDate,
-    //         story[_storyId].numLike,
-    //         story[_storyId].storyId,
-    //         story[_storyId].authorAddress,
-    //         story[_storyId].likeUserAdress
-    //     );
-    // }
-
     function deleteStory(uint _tokenId) external {
         require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
         _burn(_tokenId);
     }
 
     function addLike(uint  _storyId) external {
-        require(story[_storyId].storyId > 0, "No stories with the specified title are registered.");
-        require(story[_storyId].authorAddress != msg.sender, "Story authors cannot be liked.");
+        require(story[_storyId-1].storyId > 0, "No stories with the specified title are registered.");
+        require(story[_storyId-1].authorAddress != msg.sender, "Story authors cannot be liked.");
         bool checkDoubleLike = false;
-        for (uint index=0; index < story[_storyId].likeUserAdress.length; index++) {
-            if (story[_storyId].likeUserAdress[index] == msg.sender) {
+        for (uint index=0; index < story[_storyId-1].likeUserAdress.length; index++) {
+            if (story[_storyId-1].likeUserAdress[index] == msg.sender) {
                 checkDoubleLike = true;
             }
         }
         require(checkDoubleLike == false, "You are liking this story on the nest.");
-        story[_storyId].numLike ++;
-        story[_storyId].likeUserAdress.push(msg.sender);
+        story[_storyId-1].numLike ++;
+        story[_storyId-1].likeUserAdress.push(msg.sender);
     }
     function getAllStories() external view returns (Story[] memory) {
         return story;
     }
 
-    // function buyNft(uint _tokenId) {};
+    function buyNft(uint _tokenId, uint _storyId) public payable {
+        address ownerAddress = storyIdToAddress[_storyId];
+        require(msg.sender != storyIdToAddress[_storyId], "Seller cannot be buyer");
+        storyIdToAddress[_storyId] = msg.sender;
+        uint price = story[_storyId].numLike * basePrice;
+        require(msg.value >= price, "Insufficient payment");
+        safeTransferFrom(ownerAddress, msg.sender, _tokenId);
+        payable(ownerAddress).transfer(msg.value);
+    }
+
+    function burnNft(uint _tokenId, uint _storyId) public {
+        require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
+        // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
+        _burn(_tokenId);
+    }
 }
 
 // "cardene", "cardene avatar", "cardene profile"

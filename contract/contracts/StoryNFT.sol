@@ -100,12 +100,10 @@ contract StoryNFT is ERC721URIStorage {
     return (finalTokenUri, newItemId);
   }
 
-  function burn(uint _tokenId) external {
-    require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
-
-    address burnAddress = 0x000000000000000000000000000000000000dEaD;
-    // burn
-    _transfer(msg.sender, burnAddress, _tokenId);
-
+  function sendNft(address ownerAddress, uint _tokenId, uint likeNum, uint basePrice) external payable {
+    uint price = likeNum * 0.001 ether;
+    require(price == msg.value);
+    _transfer(msg.sender, address(this), tokenId);
   }
 }
+
