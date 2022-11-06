@@ -78,7 +78,7 @@ export default function Home() {
       </section>
       <section id="sort" className="py-5 mb-5">
         <section id="sort_tag flex items-center">
-          <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white mr-3 cursor-pointer mb-3">
+          <span className="inline-block rounded-full text-xl px-6 py-2 bg-cyan-700 text-white mr-3 cursor-pointer mb-3">
             <div className="flex">
               <span className="mr-1">
                 <svg
@@ -87,7 +87,7 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-7 h-7"
                 >
                   <path
                     strokeLinecap="round"
@@ -99,7 +99,7 @@ export default function Home() {
               リカバリー
             </div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 bg-rose-500 text-white cursor-pointer">
             <div className="flex">
               <span className="mr-1">
                 <svg
@@ -108,7 +108,7 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-7 h-7"
                 >
                   <path
                     strokeLinecap="round"
@@ -122,49 +122,49 @@ export default function Home() {
           </span>
         </section>
         <section id="sort_category flex items-center">
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">統合失調症</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ケガ</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">メンタルヘルス</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">職場</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">子育て</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ライフスタイル</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">音楽</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">統合失調症</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ADHD</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">マンガ</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">家族</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">自閉症スペクトラム</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">恋愛</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">思い出</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">子どもの頃</div>
           </span>
         </section>
