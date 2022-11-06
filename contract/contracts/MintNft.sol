@@ -17,7 +17,7 @@ import { Base64 } from "./libraries/Base64.sol";
 
 // インポートした OpenZeppelin のコントラクトを継承。
 // 継承したコントラクトのメソッドにアクセスできるようになる。
-contract StoryNFT is ERC721URIStorage {
+contract MintNft is ERC721URIStorage {
 
   // OpenZeppelin が tokenIds を簡単に追跡するために提供するライブラリを呼び出しています
   using Counters for Counters.Counter;

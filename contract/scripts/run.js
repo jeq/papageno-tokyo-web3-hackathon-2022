@@ -1,5 +1,6 @@
 // run.js
 const main = async () => {
+  const [owner, userAddress1, userAddress2] = await hre.ethers.getSigners();
   const RecoveryStoryContractFactory = await hre.ethers.getContractFactory("RecoveryStory");
   const RecoveryStoryContract = await RecoveryStoryContractFactory.deploy();
   await RecoveryStoryContract.deployed();

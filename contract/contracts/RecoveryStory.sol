@@ -3,9 +3,9 @@
 
 pragma solidity ^0.8.9;
 
-import "./StoryNFT.sol";
+import "./MintNft.sol";
 
-contract RecoveryStory is StoryNFT {
+contract RecoveryStory is MintNft {
 
     string[] public avatars;
     uint basePrice;
@@ -55,11 +55,12 @@ contract RecoveryStory is StoryNFT {
 
     function createUserProfile(
         string memory _name,
-        string memory _avatar,
-        string memory _biography
+        string memory _biography,
+        uint _avatar
     ) external {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
-        UserProfile memory _newUserProfile = UserProfile(_name, _avatar, _biography, msg.sender);
+
+        UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar+1], msg.sender);
         userProfile.push(_newUserProfile);
         addressTouserId[msg.sender] = userIdCounter;
     }
