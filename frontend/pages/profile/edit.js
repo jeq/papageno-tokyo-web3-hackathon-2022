@@ -11,7 +11,7 @@ export default function Edit() {
   const valueAvatar = 1;
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0xc215ef0cED67e8a2A44F68A3DDe01b395826ae94";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
