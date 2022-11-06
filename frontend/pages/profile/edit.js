@@ -8,10 +8,10 @@ export default function Edit() {
   //状態変数たち
   const [valueName, setValueName] = useState(""); //名前
   const [valueBiography, setValueBiography] = useState(""); //プロフィール
-  const valueAvatar = "QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx";
+  const valueAvatar = 1;
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -30,8 +30,8 @@ export default function Edit() {
         );
         const profileTxn = await profileContract.createUserProfile(
           valueName,
-          valueAvatar,
           valueBiography,
+          valueAvatar,
           {
             gasLimit: 8000000,
           }

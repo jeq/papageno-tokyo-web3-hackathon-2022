@@ -155,15 +155,15 @@ contract RecoveryStory is MintNft {
         return story;
     }
 
-    function buyNft(uint _tokenId, uint _storyId) public payable {
-        address ownerAddress = storyIdToAddress[_storyId-1];
-        require(msg.sender != storyIdToAddress[_storyId-1], "Seller cannot be buyer");
-        storyIdToAddress[_storyId-1] = msg.sender;
-        uint price = story[_storyId-1].numLike * basePrice;
-        require(msg.value >= price, "Insufficient payment");
-        safeTransferFrom(ownerAddress, msg.sender, _tokenId);
-        payable(ownerAddress).transfer(msg.value);
-    }
+    // function buyNft(uint _tokenId, uint _storyId) public payable {
+    //     address ownerAddress = storyIdToAddress[_storyId-1];
+    //     require(msg.sender != storyIdToAddress[_storyId-1], "Seller cannot be buyer");
+    //     storyIdToAddress[_storyId-1] = msg.sender;
+    //     uint price = story[_storyId-1].numLike * basePrice;
+    //     require(msg.value >= price, "Insufficient payment");
+    //     safeTransferFrom(ownerAddress, msg.sender, _tokenId);
+    //     payable(ownerAddress).transfer(msg.value);
+    // }
 
     // function burnNft(uint _storyId, uint _tokenId) public {
     //     require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");

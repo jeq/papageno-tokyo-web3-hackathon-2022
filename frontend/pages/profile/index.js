@@ -8,13 +8,28 @@ import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 
 export default function ShowProfile() {
-  // すべてのstoriesを保存する状態変数
-  const [myProfile, setMyProfile] = useState([]);
+  // 状態変数たち
+  const [myProfile, setMyProfile] = useState([]); //プロフィール
+  const [currentAccount, setCurrentAccount] = useState(""); //ウォレットアドレス
+
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
+
+  //ウォレットアドレスを取得
+  const getprofileAddress = async () => {
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("ウォレットアドレスを取得します");
+      console.log(account);
+      setCurrentAccount(account);
+    } else {
+      console.log("認証されたアカウントがありません");
+    }
+  };
 
   //自分のプロフィール情報を表示
   const viewMyProfile = async () => {
@@ -30,24 +45,25 @@ export default function ShowProfile() {
             contractABI,
             signer
           );
-          /* コントラクトからviewMyProfileメソッドを呼び出す */
-          const arrayProfile = await myContract.getUserProfile();
+          /* コントラクトからgetUserProfileメソッドを呼び出す */
+          console.log("I am" + currentAccount);
+          const arrayProfile = await myContract.getUserProfile(currentAccount);
+          console.log(arrayProfile);
 
           //配列を分割して変数に格納
-          let [myName, myAvatar, myBiography, myAddress] = arrayProfile;
+          let [profileName, profileBiography, profileAvatar, profileAddress] =
+            arrayProfile;
 
           //objectに変換
           const objectProfile = {
-            myName,
-            myAvatar,
-            myBiography,
-            myAddress,
+            profileName,
+            profileBiography,
+            profileAvatar,
+            profileAddress,
           };
 
           /* React Stateにデータを格納する */
           setMyProfile(objectProfile);
-
-          /* コントラクトのviewMyProfile関数を実行*/
         } else {
           console.log("ETHオブジェクトがありません");
         }
@@ -56,9 +72,13 @@ export default function ShowProfile() {
       }
     }
   };
-  viewMyProfile();
 
-  checkIfWalletIsConnected();
+  useEffect(() => {
+    checkIfWalletIsConnected();
+    getprofileAddress();
+    viewMyProfile();
+  }, []);
+
   return (
     <>
       <Head>
@@ -70,10 +90,10 @@ export default function ShowProfile() {
         <div className="container mx-auto my-10 px-10 flex text-gray-700">
           <div className="lg:w-4/12 px-6">
             <Profile
-              myName={myProfile.myName}
-              myAvatar={myProfile.myAvatar}
-              myBiography={myProfile.myBiography}
-              myAddress={myProfile.myAddress}
+              profileName={myProfile.profileName}
+              profileAvatar={myProfile.profileAvatar}
+              profileBiography={myProfile.profileBiography}
+              profileAddress={myProfile.profileAddress}
             ></Profile>
             <div className="flex flex-col">
               <Link

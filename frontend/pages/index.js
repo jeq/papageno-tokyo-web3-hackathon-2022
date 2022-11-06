@@ -3,15 +3,23 @@ import Card from "../components/story/Card";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../src/utils/RecoveryStory.json";
+import checkIfWalletIsConnected from "../components/wallet/CheckWallet";
 
 export default function Home() {
-  // すべてのstoriesを保存する状態変数
+  //フィルタリング
   const [allStories, setAllStories] = useState([]);
+  const [showedStories, setShowedStories] = useState([]); // List 形式で表示するストーリーデータ。
+
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
+
+  //ウォレット接続チェック
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   const getAllStories = async () => {
     if (typeof window !== "undefined") {
@@ -34,17 +42,20 @@ export default function Home() {
               storyTitle: story.storyTitle,
               tags: story.tags,
               storyBody: story.storyBody,
-              icatchSvg: story.icatchSvg,
+              dataURI: story.dataURI,
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike.toNumber(),
               storyId: story.storyId,
-              authorAdress: story.authorAdress,
+              tokenId: story.tokenId,
+              authorAddress: story.authorAddress,
+              likeUserAdress: story.likeUserAdress,
             };
           });
 
           /* React Stateにデータを格納する */
           setAllStories(storiesCleaned);
+          setShowedStories(storiesCleaned);
         } else {
           console.log("ETHオブジェクトがありません");
         }
@@ -53,9 +64,9 @@ export default function Home() {
       }
     }
   };
-  getAllStories();
-
-  //Cardに必要な情報をuseStateで渡す
+  useEffect(() => {
+    getAllStories();
+  }, []);
 
   return (
     <section className="container mx-auto">
@@ -67,7 +78,7 @@ export default function Home() {
       </section>
       <section id="sort" className="py-5 mb-5">
         <section id="sort_tag flex items-center">
-          <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white mr-3 cursor-pointer mb-3">
+          <span className="inline-block rounded-full text-xl px-6 py-2 bg-cyan-700 text-white mr-3 cursor-pointer mb-3">
             <div className="flex">
               <span className="mr-1">
                 <svg
@@ -76,7 +87,7 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-7 h-7"
                 >
                   <path
                     strokeLinecap="round"
@@ -88,7 +99,7 @@ export default function Home() {
               リカバリー
             </div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 bg-blue-900 text-white cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 bg-rose-500 text-white cursor-pointer">
             <div className="flex">
               <span className="mr-1">
                 <svg
@@ -97,7 +108,7 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-7 h-7"
                 >
                   <path
                     strokeLinecap="round"
@@ -111,55 +122,71 @@ export default function Home() {
           </span>
         </section>
         <section id="sort_category flex items-center">
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
-            <div className="flex">統合失調症</div>
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-700 text-gray-700 mr-3 cursor-pointer">
+            <div className="flex">
+              <svg
+                className="block w-6 h-6 mr-1 top-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              統合失調症
+            </div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ケガ</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">メンタルヘルス</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">職場</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">子育て</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ライフスタイル</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">音楽</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">統合失調症</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ADHD</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">マンガ</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">家族</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">自閉症スペクトラム</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">恋愛</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">思い出</div>
           </span>
-          <span className="inline-block rounded-full px-6 py-2 mb-3 border border-gray-500 text-gray-800 mr-3 cursor-pointer">
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">子どもの頃</div>
           </span>
         </section>
       </section>
       <section className="my-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-5">
-        {allStories
+        {showedStories
           .slice(0)
           .reverse()
           .map((story, index) => {
@@ -170,8 +197,8 @@ export default function Home() {
                 tags={story.tags}
                 authorAddress={story.authorAddress}
                 numLike={story.numLike}
-                key={index}
                 storyId={story.storyId}
+                key={story}
               ></Card>
             );
           })}
