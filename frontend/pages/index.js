@@ -43,7 +43,7 @@ export default function Home() {
               storyTitle: story.storyTitle,
               tags: story.tags,
               storyBody: story.storyBody,
-              icatchSvg: story.icatchSvg,
+              dataURI: story.dataURI,
               createDate: new Date(story.createDate * 1000),
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike.toNumber(),

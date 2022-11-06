@@ -98,6 +98,12 @@ export default function Create() {
         />
       </div>
 
+      {/* <button
+        // onClick={saveStory}
+        className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
+      >
+        ストーリーを保存する
+      </button> */}
       <button
         onClick={postStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
