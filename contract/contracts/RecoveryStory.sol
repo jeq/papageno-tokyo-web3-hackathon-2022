@@ -58,6 +58,7 @@ contract RecoveryStory is MintNft {
         UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar-1], msg.sender);
         userProfile.push(_newUserProfile);
         addressTouserId[msg.sender] = userIdCounter;
+        userIdCounter++;
     }
 
     function getAllAvatar() external view returns(string[] memory) {
