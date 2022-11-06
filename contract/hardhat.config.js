@@ -9,5 +9,15 @@ module.exports = {
       url: process.env.ALCHEMY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
+    hardhat: {
+      blockGasLimit: 30_000_000,
+      allowUnlimitedContractSize: true,
+    }
+  },
+  settings: {
+    optimizer: {
+      enabled: true,
+      runs: 200,
+    },
   },
 };

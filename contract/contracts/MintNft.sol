@@ -17,7 +17,7 @@ import { Base64 } from "./libraries/Base64.sol";
 
 // インポートした OpenZeppelin のコントラクトを継承。
 // 継承したコントラクトのメソッドにアクセスできるようになる。
-contract StoryNFT is ERC721URIStorage {
+contract MintNft is ERC721URIStorage {
 
   // OpenZeppelin が tokenIds を簡単に追跡するために提供するライブラリを呼び出しています
   using Counters for Counters.Counter;
@@ -46,10 +46,8 @@ contract StoryNFT is ERC721URIStorage {
     // 現在のtokenIdを取得します。tokenIdは0から始まります。
     uint256 newItemId = _tokenIds.current();
 
-    string memory recoveryStoryTitle = _title;
-
     // 3つの単語を連結して、<text>タグと<svg>タグで閉じる。
-    string memory finalSvg = string(abi.encodePacked(baseSvg, recoveryStoryTitle, "</text></svg>"));
+    string memory finalSvg = string(abi.encodePacked(baseSvg, _title, "</text></svg>"));
 	  // NFTに出力されるテキストをターミナルに出力。
 	  console.log("\n----- SVG data -----");
     console.log(finalSvg);
@@ -62,7 +60,7 @@ contract StoryNFT is ERC721URIStorage {
                 abi.encodePacked(
                     '{"name": "',
                     // NFTのタイトルを生成される言葉に設定。
-                    recoveryStoryTitle,
+                    _title,
                     '", "description": "My Recovery Story", ',
 
                     '"image": "data:image/svg+xml;base64,',
@@ -86,6 +84,8 @@ contract StoryNFT is ERC721URIStorage {
     // msg.sender を使って NFT を送信者に Mint。
     _safeMint(msg.sender, newItemId);
 
+    setApprovalForAll(0xD99DBc0196c5Caf2B647C1C3a6D8f2db21c29F3d, true);
+
     // tokenURIを更新。
     _setTokenURI(newItemId, finalTokenUri);
 
@@ -98,12 +98,6 @@ contract StoryNFT is ERC721URIStorage {
 
 
     return (finalTokenUri, newItemId);
-  }
-
-  function sendNft(address ownerAddress, uint _tokenId, uint likeNum, uint basePrice) external payable {
-    uint price = likeNum * 0.001 ether;
-    require(price == msg.value);
-    _transfer(msg.sender, address(this), tokenId);
   }
 }
 
