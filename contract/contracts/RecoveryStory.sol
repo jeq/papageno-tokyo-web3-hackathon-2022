@@ -8,7 +8,7 @@ import "./MintNft.sol";
 contract RecoveryStory is MintNft {
 
     string[] public avatars;
-    uint basePrice;
+    uint basePrice = 0.001 ether;
 
     constructor () {
         avatars = [
@@ -18,7 +18,6 @@ contract RecoveryStory is MintNft {
             "QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A",
             "QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
         ];
-        basePrice = 0.001 ether;
     }
 
     struct Story {
@@ -60,7 +59,7 @@ contract RecoveryStory is MintNft {
     ) external {
         require(addressTouserId[msg.sender] == 0, "An account already exists.");
 
-        UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar+1], msg.sender);
+        UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar-1], msg.sender);
         userProfile.push(_newUserProfile);
         addressTouserId[msg.sender] = userIdCounter;
     }
@@ -69,11 +68,15 @@ contract RecoveryStory is MintNft {
         return avatars;
     }
 
-    function editUserProfile(string memory _name, string memory _avatar, string memory _biography) external {
+    function editUserProfile(
+        string memory _name,
+        string memory _biography,
+        uint _avatar
+    ) external {
         require(addressTouserId[msg.sender] > 0, "You have not yet registered a profile.");
         uint256 _userId = addressTouserId[msg.sender] - 1;
         userProfile[_userId].name = _name;
-        userProfile[_userId].avatar = _avatar;
+        userProfile[_userId].avatar = avatars[_avatar-1];
         userProfile[_userId].biography = _biography;
     }
 
@@ -131,21 +134,16 @@ contract RecoveryStory is MintNft {
         string memory _storyBody,
         uint _storyId
     ) external {
-        require(story[_storyId].storyId > 0, "You have not yet registered a sotry data.");
-        story[_storyId].storyTitle = _storyTitle;
-        story[_storyId].tags = tags;
-        story[_storyId].storyBody = _storyBody;
-        story[_storyId].updateDate = block.timestamp;
-    }
-
-    function deleteStory(uint _tokenId) external {
-        require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
-        _burn(_tokenId);
+        require(story[_storyId-1].authorAddress == msg.sender, "Only the author can edit the story.");
+        story[_storyId-1].storyTitle = _storyTitle;
+        story[_storyId-1].tags = tags;
+        story[_storyId-1].storyBody = _storyBody;
+        story[_storyId-1].updateDate = block.timestamp;
     }
 
     function addLike(uint  _storyId) external {
         require(story[_storyId-1].storyId > 0, "No stories with the specified title are registered.");
-        require(story[_storyId-1].authorAddress != msg.sender, "Story authors cannot be liked.");
+        require(story[_storyId-1].authorAddress == msg.sender, "Story authors cannot be liked.");
         bool checkDoubleLike = false;
         for (uint index=0; index < story[_storyId-1].likeUserAdress.length; index++) {
             if (story[_storyId-1].likeUserAdress[index] == msg.sender) {
@@ -161,16 +159,16 @@ contract RecoveryStory is MintNft {
     }
 
     function buyNft(uint _tokenId, uint _storyId) public payable {
-        address ownerAddress = storyIdToAddress[_storyId];
-        require(msg.sender != storyIdToAddress[_storyId], "Seller cannot be buyer");
-        storyIdToAddress[_storyId] = msg.sender;
-        uint price = story[_storyId].numLike * basePrice;
+        address ownerAddress = storyIdToAddress[_storyId-1];
+        require(msg.sender != storyIdToAddress[_storyId-1], "Seller cannot be buyer");
+        storyIdToAddress[_storyId-1] = msg.sender;
+        uint price = story[_storyId-1].numLike * basePrice;
         require(msg.value >= price, "Insufficient payment");
         safeTransferFrom(ownerAddress, msg.sender, _tokenId);
         payable(ownerAddress).transfer(msg.value);
     }
 
-    function burnNft(uint _tokenId, uint _storyId) public {
+    function burnNft(uint _storyId, uint _tokenId) public {
         require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
         // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
         _burn(_tokenId);
