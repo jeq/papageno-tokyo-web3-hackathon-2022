@@ -53,11 +53,12 @@ contract RecoveryStory is MintNft {
         string memory _biography,
         uint _avatar
     ) external {
-        require(addressTouserId[msg.sender] != 0, "An account already exists.");
+        require(addressTouserId[msg.sender] == 0, "An account already exists.");
 
         UserProfile memory _newUserProfile = UserProfile(_name, _biography, avatars[_avatar-1], msg.sender);
         userProfile.push(_newUserProfile);
         addressTouserId[msg.sender] = userIdCounter;
+        userIdCounter++;
     }
 
     function getAllAvatar() external view returns(string[] memory) {
