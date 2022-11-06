@@ -48,7 +48,7 @@ export default function Create() {
       console.log(error);
     }
   };
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -98,15 +98,12 @@ export default function Create() {
         />
       </div>
 
-<<<<<<< HEAD
       {/* <button
         // onClick={saveStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
       >
         ストーリーを保存する
       </button> */}
-=======
->>>>>>> develop
       <button
         onClick={postStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
@@ -116,7 +113,7 @@ export default function Create() {
       <ul className="text-center">
         <li>
           <Link
-          // 削除確認画面へ
+            // 削除確認画面へ
             href="#"
             className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
           >
