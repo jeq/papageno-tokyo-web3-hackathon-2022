@@ -9,7 +9,9 @@ export default function Card(props) {
     numLike: props.numLike,
     authorAddress: props.authorAddress,
     storyId: props.storyId,
+    tokenId: props.tokenId,
   };
+
   return (
     <Link
       as={`/story/${props.storyId}/`}
@@ -73,7 +75,7 @@ export default function Card(props) {
                 />
               </svg>
             </span>
-            {props.authorAddress}
+            {storyInfo.authorAddress}
           </p>
         </div>
       </div>

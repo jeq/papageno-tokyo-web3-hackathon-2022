@@ -6,6 +6,13 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domains: ["static.vecteezy.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+        port: "",
+        pathname: "*",
+      },
+    ],
   },
 };

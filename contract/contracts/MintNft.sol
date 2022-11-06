@@ -17,7 +17,7 @@ import { Base64 } from "./libraries/Base64.sol";
 
 // インポートした OpenZeppelin のコントラクトを継承。
 // 継承したコントラクトのメソッドにアクセスできるようになる。
-contract StoryNFT is ERC721URIStorage {
+contract MintNft is ERC721URIStorage {
 
   // OpenZeppelin が tokenIds を簡単に追跡するために提供するライブラリを呼び出しています
   using Counters for Counters.Counter;
@@ -25,20 +25,30 @@ contract StoryNFT is ERC721URIStorage {
   // _tokenIdsを初期化（_tokenIds = 0）
   Counters.Counter private _tokenIds;
 
-  // SVGコードを作成。
-  // 変更されるのは、表示される単語だけ。
-  // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: #02B2B4; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='#E9E4DF' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
+  mapping(uint=>string[]) colorArray;
+
 
   // NFT トークンの名前とそのシンボルを渡します。
   constructor() ERC721 ("RecoveryStoryNFT", "RSN") {
     console.log("This is my Recovery Story contract.");
+    colorArray[0] = ["#5BB366", "#0E4529"];
+    colorArray[1] = ["#02B2B4", "#E9E4DF"];
+    colorArray[2] = ["#FFC21D", "#07BDEE"];
+    colorArray[3] = ["#FF9F9F", "#FCDDB0"];
+    colorArray[4] = ["#DEB6AB", "#AC7088"];
   }
 
+
   // シードを生成する関数を作成します。
-  function random(string memory input) internal pure returns (uint256) {
-      return uint256(keccak256(abi.encodePacked(input)));
+  function getRandomColor(uint num) internal view returns (string[] memory) {
+      return colorArray[uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty, msg.sender))) % num];
   }
+
+  // SVGコードを作成。
+  // 変更されるのは、表示される単語だけ。
+  // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
+  // string[] memory randomColor = getRandomColor(5);
+  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: ; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
 
   // ユーザーが NFT を取得するために実行する関数です。
   function mintNFT(string memory _title) public returns(string memory, uint) {
@@ -46,10 +56,8 @@ contract StoryNFT is ERC721URIStorage {
     // 現在のtokenIdを取得します。tokenIdは0から始まります。
     uint256 newItemId = _tokenIds.current();
 
-    string memory recoveryStoryTitle = _title;
-
     // 3つの単語を連結して、<text>タグと<svg>タグで閉じる。
-    string memory finalSvg = string(abi.encodePacked(baseSvg, recoveryStoryTitle, "</text></svg>"));
+    string memory finalSvg = string(abi.encodePacked(baseSvg, _title, "</text></svg>"));
 	  // NFTに出力されるテキストをターミナルに出力。
 	  console.log("\n----- SVG data -----");
     console.log(finalSvg);
@@ -62,7 +70,7 @@ contract StoryNFT is ERC721URIStorage {
                 abi.encodePacked(
                     '{"name": "',
                     // NFTのタイトルを生成される言葉に設定。
-                    recoveryStoryTitle,
+                    _title,
                     '", "description": "My Recovery Story", ',
 
                     '"image": "data:image/svg+xml;base64,',
@@ -86,6 +94,7 @@ contract StoryNFT is ERC721URIStorage {
     // msg.sender を使って NFT を送信者に Mint。
     _safeMint(msg.sender, newItemId);
 
+
     // tokenURIを更新。
     _setTokenURI(newItemId, finalTokenUri);
 
@@ -99,13 +108,5 @@ contract StoryNFT is ERC721URIStorage {
 
     return (finalTokenUri, newItemId);
   }
-
-  function burn(uint _tokenId) external {
-    require(ownerOf(_tokenId) == msg.sender, "Only NFT owners can burn.");
-
-    address burnAddress = 0x000000000000000000000000000000000000dEaD;
-    // burn
-    _transfer(msg.sender, burnAddress, _tokenId);
-
-  }
 }
+
