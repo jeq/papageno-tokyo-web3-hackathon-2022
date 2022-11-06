@@ -291,6 +291,7 @@ export default function Home() {
                 authorAddress={story.authorAddress}
                 numLike={story.numLike}
                 storyId={story.storyId}
+                tokenId={story.tokenId}
                 key={story.storyId}
               ></Card>
             );

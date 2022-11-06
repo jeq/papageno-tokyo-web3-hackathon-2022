@@ -3,12 +3,13 @@ import Profile from "../../components/Profile";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Edit() {
   //状態変数たち
   const [valueName, setValueName] = useState(""); //名前
-  const [valueBiography, setValueBiography] = useState(""); //プロフィール
-  const valueAvatar = 1;
+  const [valueBiography, setValueBiography] = useState(""); //bio
+  const [valueAvatar, setValueAvavatar] = useState(""); //avatar
 
   // デプロイされたコントラクトアドレスを保持
   const contractAddress = "0x9a16D30960ABE49cBf72D506859Ef51836E3103D";
@@ -78,6 +79,66 @@ export default function Edit() {
                 className="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2"
                 value={valueBiography}
                 onChange={(e) => setValueBiography(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="inline-block text-gray-800 text-sm sm:text-base mb-2">
+                画像
+              </label>
+              <input
+                type="radio"
+                name="example"
+                value={valueAvatar}
+                onClick={(e) => setValueAvatar(1)}
+              />
+              <Image
+                src="https://gateway.pinata.cloud/ipfs/QmPF8Tgt9Ro1QkAmm5oeT4ysjceHfLPTAjxKgSoNY2Q8Xx"
+                width={100}
+                height={100}
+              />
+              <input
+                type="radio"
+                name="example"
+                value={valueAvatar}
+                onClick={(e) => setValueAvatar(2)}
+              />
+              <Image
+                src="https://gateway.pinata.cloud/ipfs/QmajCEJgDtGqPAgSALbN74zqJcCN7TrpAxgutBs4FwZnoZ"
+                width={100}
+                height={100}
+              />
+              <input
+                type="radio"
+                name="example"
+                value={valueAvatar}
+                onClick={(e) => setValueAvatar(3)}
+              />
+              <Image
+                src="https://gateway.pinata.cloud/ipfs/QmX5dTmMNYSJ37ZjmgTL2wycnuqPeH1CWSbr3vFL87M47C"
+                width={100}
+                height={100}
+              />
+              <input
+                type="radio"
+                name="example"
+                value={valueAvatar}
+                onClick={(e) => setValueAvatar(4)}
+              />
+              <Image
+                src="https://gateway.pinata.cloud/ipfs/QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A"
+                width={100}
+                height={100}
+              />
+              <input
+                type="radio"
+                name="example"
+                value={valueAvatar}
+                onClick={(e) => setValueAvatar(5)}
+              />
+              <Image
+                src="https://gateway.pinata.cloud/ipfs/QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
+                width={100}
+                height={100}
               />
             </div>
             <button onClick={editProfile}>保存する</button>

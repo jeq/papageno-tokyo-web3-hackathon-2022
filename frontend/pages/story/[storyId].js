@@ -24,6 +24,7 @@ export default function Single() {
     numLike: router.query.numLike,
     authorAddress: router.query.authorAddress,
     storyId: router.query.storyId,
+    tokenId: router.query.tokenId,
   };
 
   // 著者のプロフィールを保存する状態変数
@@ -41,7 +42,38 @@ export default function Single() {
           contractABI,
           signer
         );
-        const storyTxn = await storyPortalContract.addLike(storyInfo.storyId, {
+        const storyTxn = await storyPortalContract.buyNft(
+          storyInfo.tokenId,
+          storyInfo.storyId,
+          {
+            gasLimit: 8000000,
+          }
+        );
+        console.log("記録しています。。", storyTxn.hash);
+        await storyTxn.wait();
+        console.log("記録が完了しました。", storyTxn.hash);
+        alert("いいねしました。ありがとうございます！");
+        console.log("Signerは、", signer);
+      } else {
+        console.log("ETHオブジェクトがありません", ethereum);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const buyStory = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        // ABIを参照
+        const storyPortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        const storyTxn = await storyPortalContract.buyNft(storyInfo.storyId, {
           gasLimit: 8000000,
         });
         console.log("記録しています。。", storyTxn.hash);
@@ -153,6 +185,7 @@ export default function Single() {
             ストーリーにいいねする
           </button>
           <Link
+            onClick={buyNft}
             href={{ pathname: `/story/purchase/confirm/`, query: storyInfo }}
             className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
             type="button"
