@@ -36,7 +36,6 @@ export default function Home() {
           );
           /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
-          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
@@ -49,7 +48,7 @@ export default function Home() {
               numLike: story.numLike.toNumber(),
               storyId: story.storyId,
               tokenId: story.tokenId,
-              authorAdress: story.authorAdress,
+              authorAddress: story.authorAddress,
               likeUserAdress: story.likeUserAdress,
             };
           });

@@ -17,8 +17,8 @@ export default function Profile(props) {
           />
         </svg>
       </span>
-      <div className="text-xl font-semibold mb-6">{props.myName}</div>
-      <div className="mb-6">{props.myBiography}</div>
+      <div className="text-xl font-semibold mb-6">{props.profileName}</div>
+      <div className="mb-6">{props.profileBiography}</div>
     </div>
   );
 }

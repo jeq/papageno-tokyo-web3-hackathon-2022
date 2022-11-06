@@ -41,7 +41,6 @@ export default function Single() {
           contractABI,
           signer
         );
-        console.log("storyId is : " + storyInfo.storyId);
         const storyTxn = await storyPortalContract.addLike(storyInfo.storyId, {
           gasLimit: 8000000,
         });
@@ -57,7 +56,6 @@ export default function Single() {
       console.log(error);
     }
   };
-  console.log(storyInfo.authorAddress);
   const getAuthorProfile = async () => {
     if (typeof window !== "undefined") {
       const { ethereum } = window;
@@ -71,20 +69,20 @@ export default function Single() {
             contractABI,
             signer
           );
-          /* コントラクトからgetAuthorメソッドを呼び出す */
-          const arrayProfile = await storyContract.getAuthor(
+          /* コントラクトからgetUserProfileメソッドを呼び出す */
+          const arrayProfile = await storyContract.getUserProfile(
             storyInfo.authorAddress
           );
 
           //配列を分割して変数に格納
-          let [authorName, authorAvatar, authorBiography, authorAddress] =
+          let [authorName, authorBiography, authorAvatar, authorAddress] =
             arrayProfile;
 
           //objectに変換
           const objectProfile = {
             authorName,
-            authorAvatar,
             authorBiography,
+            authorAvatar,
             authorAddress,
           };
 
@@ -102,6 +100,8 @@ export default function Single() {
   useEffect(() => {
     getAuthorProfile();
   }, []);
+
+  console.log(authorProfile.authorName);
 
   return (
     <div className="container mx-auto flex px-10 text-gray-700">
@@ -126,17 +126,11 @@ export default function Single() {
       <div className="lg:w-5/12 px-10 sticky right-0">
         <div className="font-bold">このストーリーを書いた人</div>
         <Profile
-          authorName={authorProfile.authorName}
-          authorAvatar={authorProfile.authorAvatar}
-          authorBiography={authorProfile.authorBiography}
-          authorAddress={authorProfile.authorAddress}
+          profileName={authorProfile.authorName}
+          profileAvatar={authorProfile.authorAvatar}
+          profileBiography={authorProfile.authorBiography}
+          profileAddress={authorProfile.authorAddress}
         ></Profile>
-        <Link
-          href="#"
-          className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-        >
-          プロフィールを見る
-        </Link>
         <div className="flex flex-col">
           <button
             onClick={addLike}

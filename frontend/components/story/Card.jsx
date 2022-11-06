@@ -10,6 +10,8 @@ export default function Card(props) {
     authorAddress: props.authorAddress,
     storyId: props.storyId,
   };
+
+  console.log(storyInfo);
   return (
     <Link
       as={`/story/${props.storyId}/`}
@@ -73,7 +75,7 @@ export default function Card(props) {
                 />
               </svg>
             </span>
-            {props.authorAddress}
+            {storyInfo.authorAddress}
           </p>
         </div>
       </div>

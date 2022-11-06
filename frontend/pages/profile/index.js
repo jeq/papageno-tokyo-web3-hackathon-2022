@@ -19,7 +19,7 @@ export default function ShowProfile() {
   const contractABI = abi.abi;
 
   //ウォレットアドレスを取得
-  const getMyAddress = async () => {
+  const getprofileAddress = async () => {
     const accounts = await ethereum.request({ method: "eth_accounts" });
     if (accounts.length !== 0) {
       const account = accounts[0];
@@ -51,14 +51,15 @@ export default function ShowProfile() {
           console.log(arrayProfile);
 
           //配列を分割して変数に格納
-          let [myName, myBiography, myAvatar, myAddress] = arrayProfile;
+          let [profileName, profileBiography, profileAvatar, profileAddress] =
+            arrayProfile;
 
           //objectに変換
           const objectProfile = {
-            myName,
-            myBiography,
-            myAvatar,
-            myAddress,
+            profileName,
+            profileBiography,
+            profileAvatar,
+            profileAddress,
           };
 
           /* React Stateにデータを格納する */
@@ -74,7 +75,7 @@ export default function ShowProfile() {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-    getMyAddress();
+    getprofileAddress();
     viewMyProfile();
   }, []);
 
@@ -89,10 +90,10 @@ export default function ShowProfile() {
         <div className="container mx-auto my-10 px-10 flex text-gray-700">
           <div className="lg:w-4/12 px-6">
             <Profile
-              myName={myProfile.myName}
-              myAvatar={myProfile.myAvatar}
-              myBiography={myProfile.myBiography}
-              myAddress={myProfile.myAddress}
+              profileName={myProfile.profileName}
+              profileAvatar={myProfile.profileAvatar}
+              profileBiography={myProfile.profileBiography}
+              profileAddress={myProfile.profileAddress}
             ></Profile>
             <div className="flex flex-col">
               <Link
