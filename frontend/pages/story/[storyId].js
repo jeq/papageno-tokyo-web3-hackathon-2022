@@ -13,7 +13,7 @@ export default function Single() {
   const router = useRouter();
 
   // コントラクト接続の設定
-  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
+  const contractAddress = "0x9a16D30960ABE49cBf72D506859Ef51836E3103D";
   const contractABI = abi.abi;
 
   //ストーリー情報

@@ -11,7 +11,6 @@ export default function Card(props) {
     storyId: props.storyId,
   };
 
-  console.log(storyInfo);
   return (
     <Link
       as={`/story/${props.storyId}/`}
