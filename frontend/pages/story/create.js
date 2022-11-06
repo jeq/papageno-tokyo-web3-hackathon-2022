@@ -2,8 +2,8 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
-import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
 import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
+import Link from "next/link";
 
 export default function Create() {
   //状態変数たち
@@ -97,23 +97,29 @@ export default function Create() {
       </div>
 
       <button
-        // onClick={postStory}
-        className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
-      >
-        ストーリーを保存する
-      </button>
-      <button
         onClick={postStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
       >
         ストーリーを出品する
       </button>
-      <button
-        // onClick={postStory}
-        className="block mx-auto mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-      >
-        削除する
-      </button>
+      <ul className="text-center">
+          <li>
+            <Link
+              href="createnew"
+              className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+            >
+              ひとつ前の画面に戻る
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/"
+              className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+            >
+              HOME
+            </Link>
+          </li>
+        </ul>
     </div>
   );
 }
