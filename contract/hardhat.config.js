@@ -12,7 +12,7 @@ module.exports = {
     hardhat: {
       blockGasLimit: 30_000_000,
       allowUnlimitedContractSize: true,
-    }
+    },
   },
   settings: {
     optimizer: {

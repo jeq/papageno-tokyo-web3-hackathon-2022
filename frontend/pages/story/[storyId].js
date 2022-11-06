@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Markdown from "../../components/Markdown";
 import Profile from "../../components/Profile";
@@ -24,6 +25,9 @@ export default function Single() {
     authorAddress: router.query.authorAddress,
     storyId: router.query.storyId,
   };
+
+  // 著者のプロフィールを保存する状態変数
+  const [authorProfile, setAuthorProfile] = useState([]);
 
   const addLike = async () => {
     try {
@@ -53,6 +57,51 @@ export default function Single() {
       console.log(error);
     }
   };
+  console.log(storyInfo.authorAddress);
+  const getAuthorProfile = async () => {
+    if (typeof window !== "undefined") {
+      const { ethereum } = window;
+
+      try {
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const storyContract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+          /* コントラクトからgetAuthorメソッドを呼び出す */
+          const arrayProfile = await storyContract.getAuthor(
+            storyInfo.authorAddress
+          );
+
+          //配列を分割して変数に格納
+          let [authorName, authorAvatar, authorBiography, authorAddress] =
+            arrayProfile;
+
+          //objectに変換
+          const objectProfile = {
+            authorName,
+            authorAvatar,
+            authorBiography,
+            authorAddress,
+          };
+
+          /* React Stateにデータを格納する */
+          setAuthorProfile(objectProfile);
+        } else {
+          console.log("ETHオブジェクトがありません");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAuthorProfile();
+  }, []);
 
   return (
     <div className="container mx-auto flex px-10 text-gray-700">
@@ -76,7 +125,12 @@ export default function Single() {
       </div>
       <div className="lg:w-5/12 px-10 sticky right-0">
         <div className="font-bold">このストーリーを書いた人</div>
-        <Profile></Profile>
+        <Profile
+          authorName={authorProfile.authorName}
+          authorAvatar={authorProfile.authorAvatar}
+          authorBiography={authorProfile.authorBiography}
+          authorAddress={authorProfile.authorAddress}
+        ></Profile>
         <Link
           href="#"
           className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
@@ -96,9 +150,9 @@ export default function Single() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               ></path>
             </svg>
@@ -118,9 +172,9 @@ export default function Single() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
               ></path>
             </svg>
