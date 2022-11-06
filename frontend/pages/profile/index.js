@@ -8,13 +8,28 @@ import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 
 export default function ShowProfile() {
-  // ユーザーのプロフィールを保存する状態変数
-  const [myProfile, setMyProfile] = useState([]);
+  // 状態変数たち
+  const [myProfile, setMyProfile] = useState([]); //プロフィール
+  const [currentAccount, setCurrentAccount] = useState(""); //ウォレットアドレス
+
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
+
+  //ウォレットアドレスを取得
+  const getMyAddress = async () => {
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("ウォレットアドレスを取得します");
+      console.log(account);
+      setCurrentAccount(account);
+    } else {
+      console.log("認証されたアカウントがありません");
+    }
+  };
 
   //自分のプロフィール情報を表示
   const viewMyProfile = async () => {
@@ -30,17 +45,19 @@ export default function ShowProfile() {
             contractABI,
             signer
           );
-          /* コントラクトからviewMyProfileメソッドを呼び出す */
-          const arrayProfile = await myContract.getUserProfile();
+          /* コントラクトからgetUserProfileメソッドを呼び出す */
+          console.log("I am" + currentAccount);
+          const arrayProfile = await myContract.getUserProfile(currentAccount);
+          console.log(arrayProfile);
 
           //配列を分割して変数に格納
-          let [myName, myAvatar, myBiography, myAddress] = arrayProfile;
+          let [myName, myBiography, myAvatar, myAddress] = arrayProfile;
 
           //objectに変換
           const objectProfile = {
             myName,
-            myAvatar,
             myBiography,
+            myAvatar,
             myAddress,
           };
 
@@ -55,13 +72,10 @@ export default function ShowProfile() {
     }
   };
 
-  /* viewMyProfile関数を実行*/
-  useEffect(() => {
-    viewMyProfile();
-  }, []);
-
   useEffect(() => {
     checkIfWalletIsConnected();
+    getMyAddress();
+    viewMyProfile();
   }, []);
 
   return (

@@ -11,11 +11,12 @@ export default function Home() {
   const [showedStories, setShowedStories] = useState([]); // List 形式で表示するストーリーデータ。
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
+  const contractAddress = "0x15Ded7cc03c691b66b7D3309EC8Bb5058EAD7483";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
 
+  //ウォレット接続チェック
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -35,6 +36,7 @@ export default function Home() {
           );
           /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
+          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
@@ -63,7 +65,6 @@ export default function Home() {
       }
     }
   };
-
   useEffect(() => {
     getAllStories();
   }, []);
@@ -122,8 +123,24 @@ export default function Home() {
           </span>
         </section>
         <section id="sort_category flex items-center">
-          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
-            <div className="flex">統合失調症</div>
+          <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-700 text-gray-700 mr-3 cursor-pointer">
+            <div className="flex">
+              <svg
+                className="block w-6 h-6 mr-1 top-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              統合失調症
+            </div>
           </span>
           <span className="inline-block rounded-full text-xl px-6 py-2 mb-3 border border-gray-300 text-gray-700 mr-3 cursor-pointer">
             <div className="flex">ケガ</div>
