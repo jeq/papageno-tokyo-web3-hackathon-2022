@@ -84,7 +84,6 @@ contract MintNft is ERC721URIStorage {
     // msg.sender を使って NFT を送信者に Mint。
     _safeMint(msg.sender, newItemId);
 
-    setApprovalForAll(0xD99DBc0196c5Caf2B647C1C3a6D8f2db21c29F3d, true);
 
     // tokenURIを更新。
     _setTokenURI(newItemId, finalTokenUri);
