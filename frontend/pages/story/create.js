@@ -12,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -48,7 +48,7 @@ export default function Create() {
       console.log(error);
     }
   };
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -107,7 +107,7 @@ export default function Create() {
       <ul className="text-center">
         <li>
           <Link
-          // 削除確認画面へ
+            // 削除確認画面へ
             href="#"
             className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
           >

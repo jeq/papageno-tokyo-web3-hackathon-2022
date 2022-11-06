@@ -11,7 +11,7 @@ export default function Home() {
   const [showedStories, setShowedStories] = useState([]); // List 形式で表示するストーリーデータ。
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -35,6 +35,7 @@ export default function Home() {
           );
           /* コントラクトからgetAllStoriesメソッドを呼び出す */
           const stories = await storyContract.getAllStories();
+          console.log(stories);
           /* UI側に必要な情報を取得 */
           const storiesCleaned = stories.map((story) => {
             return {
@@ -46,7 +47,9 @@ export default function Home() {
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike.toNumber(),
               storyId: story.storyId,
+              tokenId: story.tokenId,
               authorAdress: story.authorAdress,
+              likeUserAdress: story.likeUserAdress,
             };
           });
 
@@ -61,7 +64,9 @@ export default function Home() {
       }
     }
   };
-  getAllStories();
+  useEffect(() => {
+    getAllStories();
+  }, []);
 
   return (
     <section className="container mx-auto">

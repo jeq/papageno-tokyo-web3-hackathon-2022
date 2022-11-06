@@ -12,7 +12,7 @@ export default function ShowProfile() {
   const [myProfile, setMyProfile] = useState([]); //プロフィール
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -31,7 +31,7 @@ export default function ShowProfile() {
             contractABI,
             signer
           );
-          /* コントラクトからviewMyProfileメソッドを呼び出す */
+          /* コントラクトからgetUserProfileメソッドを呼び出す */
           const arrayProfile = await myContract.getUserProfile();
 
           //配列を分割して変数に格納
@@ -47,8 +47,6 @@ export default function ShowProfile() {
 
           /* React Stateにデータを格納する */
           setMyProfile(objectProfile);
-
-          /* コントラクトのviewMyProfile関数を実行*/
         } else {
           console.log("ETHオブジェクトがありません");
         }
@@ -57,10 +55,10 @@ export default function ShowProfile() {
       }
     }
   };
-  viewMyProfile();
 
   useEffect(() => {
     checkIfWalletIsConnected();
+    viewMyProfile();
   }, []);
 
   return (
