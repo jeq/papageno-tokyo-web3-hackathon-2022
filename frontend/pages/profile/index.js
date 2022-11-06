@@ -8,10 +8,11 @@ import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
 
 export default function ShowProfile() {
-  // すべてのstoriesを保存する状態変数
-  const [myProfile, setMyProfile] = useState([]);
+  // 状態変数たち
+  const [myProfile, setMyProfile] = useState([]); //プロフィール
+
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -30,7 +31,7 @@ export default function ShowProfile() {
             contractABI,
             signer
           );
-          /* コントラクトからviewMyProfileメソッドを呼び出す */
+          /* コントラクトからgetUserProfileメソッドを呼び出す */
           const arrayProfile = await myContract.getUserProfile();
 
           //配列を分割して変数に格納
@@ -46,8 +47,6 @@ export default function ShowProfile() {
 
           /* React Stateにデータを格納する */
           setMyProfile(objectProfile);
-
-          /* コントラクトのviewMyProfile関数を実行*/
         } else {
           console.log("ETHオブジェクトがありません");
         }
@@ -56,9 +55,12 @@ export default function ShowProfile() {
       }
     }
   };
-  viewMyProfile();
 
-  checkIfWalletIsConnected();
+  useEffect(() => {
+    checkIfWalletIsConnected();
+    viewMyProfile();
+  }, []);
+
   return (
     <>
       <Head>

@@ -66,6 +66,14 @@ export default function CreateStory() {
               誰かのストーリーから二次創作を作る
             </span>
           </Link>
+          <div className="text-center">
+            <Link
+              href="/"
+              className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+            >
+              HOME
+            </Link>
+          </div>
         </div>
       </div>
     </div>

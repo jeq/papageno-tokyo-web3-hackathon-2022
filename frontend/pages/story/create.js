@@ -2,8 +2,8 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../../src/utils/RecoveryStory.json";
-import CheckIfWalletIsConnected from "../../components/wallet/CheckWallet";
 import checkIfWalletIsConnected from "../../components/wallet/CheckWallet";
+import Link from "next/link";
 
 export default function Create() {
   //状態変数たち
@@ -12,7 +12,7 @@ export default function Create() {
   const [valueTags, setValueTags] = useState(""); //タグ
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -50,7 +50,9 @@ export default function Create() {
   };
   useEffect(() => {}, []);
 
-  checkIfWalletIsConnected();
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
   return (
     <div className="container lg:w-5/12 mx-auto my-20 text-gray-700">
       <p className="text-2xl font-bold text-center mb-10">
@@ -97,23 +99,30 @@ export default function Create() {
       </div>
 
       <button
-        // onClick={postStory}
-        className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
-      >
-        ストーリーを保存する
-      </button>
-      <button
         onClick={postStory}
         className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
       >
         ストーリーを出品する
       </button>
-      <button
-        // onClick={postStory}
-        className="block mx-auto mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-      >
-        削除する
-      </button>
+      <ul className="text-center">
+        <li>
+          <Link
+            // 削除確認画面へ
+            href="#"
+            className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+          >
+            ストーリーを削除する
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="createnew"
+            className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+          >
+            ひとつ前の画面に戻る
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 }
