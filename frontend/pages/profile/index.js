@@ -10,12 +10,26 @@ import abi from "../../src/utils/RecoveryStory.json";
 export default function ShowProfile() {
   // 状態変数たち
   const [myProfile, setMyProfile] = useState([]); //プロフィール
+  const [currentAccount, setCurrentAccount] = useState(""); //ウォレットアドレス
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const contractAddress = "0xc215ef0cED67e8a2A44F68A3DDe01b395826ae94";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
+
+  //ウォレットアドレスを取得
+  const getMyAddress = async () => {
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("認証されたアカウントがあります");
+      console.log(account);
+      setCurrentAccount(account);
+    } else {
+      console.log("認証されたアカウントがありません");
+    }
+  };
 
   //自分のプロフィール情報を表示
   const viewMyProfile = async () => {
@@ -58,6 +72,7 @@ export default function ShowProfile() {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+    getMyAddress();
     viewMyProfile();
   }, []);
 
