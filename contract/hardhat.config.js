@@ -10,8 +10,8 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     hardhat: {
-      blockGasLimit: 30_000_000,
-      allowUnlimitedContractSize: true,
+      blockGasLimit: 40000000,
+      // allowUnlimitedContractSize: true,
     }
   },
   settings: {
