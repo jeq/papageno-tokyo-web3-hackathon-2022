@@ -17,6 +17,7 @@ contract RecoveryStory is StoryNFT {
             "QmbFHVPH1VcUjiju9KAf8cknkAyXXDEehe23hdaHc8i54A",
             "QmZ1p634cxLqBtU98EYYNisVBVyYFshvkCQcPSStjYbbBS"
         ];
+        uint basePrice = 0.001 ether;
     }
 
     struct Story {
@@ -185,7 +186,21 @@ contract RecoveryStory is StoryNFT {
         return story;
     }
 
-    // function buyNft(uint _tokenId) {};
+    function buyNft(uint _tokenId, uint _storyId) public payable {
+        address ownerAddress = storyIdToAddress[_storyId];
+        reqiure(msg.sender != storyIdToAddress[_storyId], "Seller cannot be buyer");
+        storyIdToAddress[_storyId] = msg.sender;
+        uint price = likeNum * basePrice;
+        require(msg.value >= price, "Insufficient payment");
+        safeTransferFrom(ownerAddress, msg.sender, msg.value);
+        payable(ownerAddress).transferFrom(msg.value);
+    }
+
+    function burnNft(uint _tokenId, uint _storyId) public {
+        require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
+        // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
+        _burn(_tokenId);
+    }
 }
 
 // "cardene", "cardene avatar", "cardene profile"
