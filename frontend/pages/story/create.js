@@ -113,15 +113,6 @@ export default function Create() {
       <ul className="text-center">
         <li>
           <Link
-            // 削除確認画面へ
-            href="#"
-            className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-          >
-            ストーリーを削除する
-          </Link>
-        </li>
-        <li>
-          <Link
             href="createnew"
             className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
           >
