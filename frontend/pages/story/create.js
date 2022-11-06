@@ -48,7 +48,7 @@ export default function Create() {
       console.log(error);
     }
   };
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   checkIfWalletIsConnected();
   return (
@@ -103,23 +103,24 @@ export default function Create() {
         ストーリーを出品する
       </button>
       <ul className="text-center">
-          <li>
-            <Link
-              href="createnew"
-              className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-            >
-              ひとつ前の画面に戻る
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/"
-              className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
-            >
-              HOME
-            </Link>
-          </li>
-        </ul>
+        <li>
+          <Link
+          // 削除確認画面へ
+            href="#"
+            className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+          >
+            ストーリーを削除する
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="createnew"
+            className="inline-block mb-4 hover:border-b gray-900 border-gray-400 delay-50 ease-in-out"
+          >
+            ひとつ前の画面に戻る
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 }
