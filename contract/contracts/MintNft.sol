@@ -25,20 +25,30 @@ contract MintNft is ERC721URIStorage {
   // _tokenIdsを初期化（_tokenIds = 0）
   Counters.Counter private _tokenIds;
 
-  // SVGコードを作成。
-  // 変更されるのは、表示される単語だけ。
-  // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: #02B2B4; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='#E9E4DF' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
+  mapping(uint=>string[]) colorArray;
+
 
   // NFT トークンの名前とそのシンボルを渡します。
   constructor() ERC721 ("RecoveryStoryNFT", "RSN") {
     console.log("This is my Recovery Story contract.");
+    colorArray[0] = ["#5BB366", "#0E4529"];
+    colorArray[1] = ["#02B2B4", "#E9E4DF"];
+    colorArray[2] = ["#FFC21D", "#07BDEE"];
+    colorArray[3] = ["#FF9F9F", "#FCDDB0"];
+    colorArray[4] = ["#DEB6AB", "#AC7088"];
   }
 
+
   // シードを生成する関数を作成します。
-  function random(string memory input) internal pure returns (uint256) {
-      return uint256(keccak256(abi.encodePacked(input)));
+  function getRandomColor(uint num) internal view returns (string[] memory) {
+      return colorArray[uint(keccak256(abi.encodePacked(block.timestamp,block.difficulty, msg.sender))) % num];
   }
+
+  // SVGコードを作成。
+  // 変更されるのは、表示される単語だけ。
+  // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成。
+  // string[] memory randomColor = getRandomColor(5);
+  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: ; font-family: 'Hiragino Maru Gothic Pro'; font-size: 24px; }</style><rect width='100%' height='100%' fill='' /><text x='50%' y='50%' className='base' dominant-baseline='middle' text-anchor='middle'>";
 
   // ユーザーが NFT を取得するために実行する関数です。
   function mintNFT(string memory _title) public returns(string memory, uint) {
