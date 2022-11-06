@@ -13,7 +13,7 @@ export default function ShowProfile() {
   const [currentAccount, setCurrentAccount] = useState(""); //ウォレットアドレス
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x9a16D30960ABE49cBf72D506859Ef51836E3103D";
+  const contractAddress = "0x1F5Ea3Cf10e8a4f6feAF152C50e3214B673eDCc8";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;

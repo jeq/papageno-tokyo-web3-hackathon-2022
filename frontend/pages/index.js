@@ -33,7 +33,7 @@ export default function Home() {
   const [showedStories, setShowedStories] = useState([]); // List 形式で表示するストーリーデータ。
 
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x9a16D30960ABE49cBf72D506859Ef51836E3103D";
+  const contractAddress = "0x1F5Ea3Cf10e8a4f6feAF152C50e3214B673eDCc8";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
@@ -75,7 +75,7 @@ export default function Home() {
               updateDate: new Date(story.updateDate * 1000),
               numLike: story.numLike.toNumber(),
               storyId: story.storyId,
-              tokenId: story.tokenId,
+              tokenId: story.tokenId.toNumber(),
               authorAddress: story.authorAddress,
               likeUserAdress: story.likeUserAdress,
             };
@@ -95,6 +95,8 @@ export default function Home() {
   useEffect(() => {
     getAllStories();
   }, []);
+
+  console.log(allStories);
 
   return (
     <section className="container mx-auto">

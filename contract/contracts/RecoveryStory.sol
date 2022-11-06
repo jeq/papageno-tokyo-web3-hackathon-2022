@@ -169,6 +169,5 @@ contract RecoveryStory is MintNft {
     //     require(story[_storyId-1].authorAddress == msg.sender, "Only the creator of the story can burn.");
     //     // _transfer(msg.sender, 0x000000000000000000000000000000000000dEaD, _tokenId);
     //     _burn(_tokenId);
-    }
+    // }
 }
-

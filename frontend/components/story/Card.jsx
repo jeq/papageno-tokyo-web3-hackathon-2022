@@ -9,6 +9,7 @@ export default function Card(props) {
     numLike: props.numLike,
     authorAddress: props.authorAddress,
     storyId: props.storyId,
+    tokenId: props.tokenId,
   };
 
   return (

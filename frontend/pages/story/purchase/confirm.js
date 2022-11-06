@@ -1,14 +1,23 @@
+import { useRouter } from "next/router";
 import Image from "next/image";
 import CardBorderdLink from "../../../components/story/CardBorderdLink";
 import Link from "next/link";
+import { ethers } from "ethers";
+import abi from "../../../src/utils/RecoveryStory.json";
 
-export default function Completed(props) {
+export default function Completed() {
+  // コントラクト接続の設定
+  const contractAddress = "0x1F5Ea3Cf10e8a4f6feAF152C50e3214B673eDCc8";
+  const contractABI = abi.abi;
+
+  //遷移前からのデータ取得
+  const router = useRouter();
   //ストーリー情報
   const storyInfo = {
-    title: props.title,
-    storyId: props.storyId,
+    title: router.query.title,
+    storyId: router.query.storyId,
+    tokenId: router.query.tokenId,
   };
-
   const purchaseStory = async () => {
     try {
       const { ethereum } = window;
@@ -21,7 +30,8 @@ export default function Completed(props) {
           contractABI,
           signer
         );
-        const storyTxn = await storyPortalContract.purchaseStory(
+        const storyTxn = await storyPortalContract.buyNft(
+          storyInfo.tokenId,
           storyInfo.storyId,
           {
             gasLimit: 8000000,
@@ -30,6 +40,7 @@ export default function Completed(props) {
         console.log("記録しています。。", storyTxn.hash);
         await storyTxn.wait();
         console.log("記録が完了しました。", storyTxn.hash);
+        alert("いいねしました。ありがとうございます！");
         console.log("Signerは、", signer);
       } else {
         console.log("ETHオブジェクトがありません", ethereum);
@@ -45,14 +56,15 @@ export default function Completed(props) {
           本当にこのストーリーを購入しますか？
         </p>
         <p className="text-center text-lg mb-1">現在の価格 0.01ETH</p>
-        <p className="text-center mb-10">いいねが増えるごとに価格が上がります</p>
-        <Link
-          href={{ pathname: `/story/purchase/complete`, query: storyInfo }}
+        <p className="text-center mb-10">
+          いいねが増えるごとに価格が上がります
+        </p>
+        <button
           onClick={purchaseStory}
           className="block w-full text-sm md:text-base font-semibold text-center text-white rounded outline-none px-8 py-3 mb-5 bg-slate-500 drop-shadow	mt-4 lg:mt-0 hover:bg-slate-600 focus-visible:ring ring-slate-300 transition duration-100"
         >
           購入する
-        </Link>
+        </button>
         <div className="text-center">
           <Link
             href="/"
