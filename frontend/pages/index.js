@@ -3,15 +3,22 @@ import Card from "../components/story/Card";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../src/utils/RecoveryStory.json";
+import checkIfWalletIsConnected from "../components/wallet/CheckWallet";
 
 export default function Home() {
-  // すべてのstoriesを保存する状態変数
+  //フィルタリング
   const [allStories, setAllStories] = useState([]);
+  const [showedStories, setShowedStories] = useState([]); // List 形式で表示するストーリーデータ。
+
   // デプロイされたコントラクトアドレスを保持
-  const contractAddress = "0x69d7cb40566d9c655bd114d1ce23be2264dd1fe6";
+  const contractAddress = "0x3204D4B38A904669298BB85937693bBa4e9c9128";
   // コントラクトからすべてのstoriesを取得するメソッド
   // ABIの内容
   const contractABI = abi.abi;
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   const getAllStories = async () => {
     if (typeof window !== "undefined") {
@@ -45,6 +52,7 @@ export default function Home() {
 
           /* React Stateにデータを格納する */
           setAllStories(storiesCleaned);
+          setShowedStories(storiesCleaned);
         } else {
           console.log("ETHオブジェクトがありません");
         }
@@ -54,8 +62,6 @@ export default function Home() {
     }
   };
   getAllStories();
-
-  //Cardに必要な情報をuseStateで渡す
 
   return (
     <section className="container mx-auto">
@@ -159,7 +165,7 @@ export default function Home() {
         </section>
       </section>
       <section className="my-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-5">
-        {allStories
+        {showedStories
           .slice(0)
           .reverse()
           .map((story, index) => {
@@ -170,8 +176,8 @@ export default function Home() {
                 tags={story.tags}
                 authorAddress={story.authorAddress}
                 numLike={story.numLike}
-                key={index}
                 storyId={story.storyId}
+                key={story}
               ></Card>
             );
           })}
